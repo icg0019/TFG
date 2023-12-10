@@ -1,0 +1,193 @@
+/* Establecer dimensiones máximas del div. Se usa para mostrar las necesidades de los briks*/
+.tabla-container_necesidades {
+  max-height: 300px; /* Ajusta según sea necesario */
+  overflow: auto; /* Mostrar barra de desplazamiento si el contenido es demasiado grande */
+  border: 1px solid #ddd; /* Añadir borde para claridad visual */
+}
+
+/* Estilos para el logotipo */
+img {
+  max-width: 100px;
+  margin-right: 10px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.style-button {
+  /* Agrega estilos personalizados según tu preferencia */
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.content-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*Clase de la cabecera de la base */
+.header {
+  /*background-color: rgba(0, 128, 0, 0.7); Fondo semitransparente verde */
+  background-color: rgba(0, 128, 0, 0.7);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  max-height: 100px;
+  margin-right: 20px;
+}
+
+/* Barra de navegacion de la base */
+.barra_navegacion {
+  display: flex;
+  justify-content: center; /* Centrar elementos horizontalmente */
+  align-items: center; /* Alinear elementos verticalmente */
+  padding: 10px 0;
+  width: 100%;
+}
+
+body {
+  background-color: #a5b9a1;
+  padding: 50px;
+  text-align: center;
+}
+
+.container {
+  max-width: 600px;
+}
+
+.error-image {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+/* Barra de navegacion de la base */
+.barra_navegacion ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+/* Barra de navegacion de la base */
+.barra_navegacion li {
+  margin-right: 20px;
+  border-bottom: 2px solid transparent; /* Línea inferior transparente */
+}
+
+/* Barra de navegacion de la base */
+.barra_navegacion li a {
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s; /* Agregar transición al cambio de color de fondo */
+}
+
+/* Cambiar color de fondo en hover */
+.barra_navegacion li a:hover {
+  background-color: #333; /* Color de fondo en hover */
+  border-bottom: 2px solid #fff; /* Línea inferior blanca en hover */
+}
+
+.content-container {
+  padding: 20px;
+}
+
+/* Estilo adicional para la tabla*/
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.h1_titulo {
+  font-size: 2.5em;
+  color: #337ab7;
+  margin-bottom: 20px;
+}
+
+.custom-bg {
+  background-color: rgba(1, 191, 1, 0.3); /* Fondo verde con opacidad */
+  color: #000000; /* Cambia el color del texto a negro, si es necesario */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 20px; /* Ajusta el relleno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  transition: background-color 0.3s ease; /* Transición suave al cambiar el color de fondo */
+}
+
+.boton-inicio {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  background-color: #4caf50; /* Verde */
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 24px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin-bottom: 15px;
+}
+
+.boton-inicio:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.titulo-paginas2 {
+  font-family: 'Arial', sans-serif;
+  font-size: 30px;
+  font-style: bold;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* En tu hoja de estilo CSS o en el bloque de estilo en tu HTML */
+.titulo-paginas {
+  /* Alineación al centro */
+  text-align: center;
+
+  /* Tamaño del texto */
+  font-size: 36px;
+
+  /* Estilo de la fuente */
+  font-family: 'Arial', sans-serif;
+
+  /* Color del texto */
+  color: #000000;
+
+  /* Fondo del texto */
+  background-color: #e8f5e9;
+
+  /* Margen superior e inferior */
+  margin: 20px 0;
+
+  /* Relleno interno del texto */
+  padding: 15px;
+
+  /* Sombra del texto */
+  box-shadow: 5px 5px 10px #888888;
+
+  /* Transición para suavizar cambios */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}

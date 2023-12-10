@@ -1,0 +1,32 @@
+{% extends 'base.html' %} {% block title %}Inicio{% endblock %} {% block content
+%}
+
+<div class="container mt-5 text-center">
+  <h1 class="titulo-paginas">¿Qué quieres hacer?</h1>
+  <br />
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <a href="{{ url_for('briks_slim') }}" class="boton-inicio"
+        >Calcular pedidos de briks SLIM</a
+      >
+    </div>
+    <div class="col-md-6">
+      <a href="{{ url_for('briks_edge') }}" class="boton-inicio"
+        >Calcular pedidos de briks EDGE</a
+      >
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <a href="{{ url_for('brik_500') }}" class="boton-inicio"
+        >Calcular pedidos de briks 500</a
+      >
+    </div>
+    <div class="col-md-6">
+      <a href="{{ url_for('historico_pedidos') }}" class="boton-inicio"
+        >Descargar pedidos de SAP</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}

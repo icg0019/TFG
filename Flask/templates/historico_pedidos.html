@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %} Calculo de pedidos {% endblock %}
+{% block content %}
+  <body>
+    <!-- Formulario para seleccionar pedidos y exportar a CSV -->
+    <form method="post" action="{{ url_for('exportar_csv_historico') }}">
+      <input type="hidden" name="df" value="{{ df.to_json() }}" /> 
+      <div class="text-center">
+        <button type="submit" class="btn btn-success style-button">Exportar a CSV</button>
+      </div>
+     
+      <div class="d-flex justify-content-end mt-2">
+        <label for="fecha">Filtrar por Fecha:</label>
+        <input type="date" id="fecha" />
+        <button type="button" onclick="filtrarPorFecha()">Filtrar</button>
+      </div>
+
+      <table class="table table-bordered mt-3">
+        <thead>
+          <tr>
+            <th></th> <!-- Espacio para el checkbox -->
+            <th>Número de Pedido</th>
+            <th>Fecha de creación</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido, fecha in df_pedidos_unicos.itertuples() %}
+            <tr class="pedido-info" fecha="{{ fecha }}">
+              <td>
+                <input type="checkbox" name="pedido_{{ pedido }}" value="{{ pedido }}" />
+              </td>
+              <td>{{ pedido }}</td>
+              <td>{{ fecha }}</td>
+            </tr>
+            <!-- Fila oculta para mostrar las posiciones asociadas al pedido -->
+            <tr class="posiciones-info" style="display: none;">
+              <td colspan="3">
+                <div class="card-group">
+                  {% for posicion, material, cantidad in df[df["Pedido"] == pedido][['posicion', 'material', 'cantidad']].itertuples(index=False) %}
+                    <div class="card">
+                      <div class="card-body">
+                        <p class="card-text">
+                          <strong>Material: </strong>{{ "{:.0f}".format(material) }} <br>
+                          <strong>Cantidad:</strong> {{ "{:,.0f}".format(cantidad).replace(',', '.') }} unidades
+                        </p>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+
+    <script>
+      function filtrarPorFecha() {
+        const fechaSeleccionada = document.getElementById('fecha').value;
+        const pedidos = document.querySelectorAll('.pedido-info');
+
+        pedidos.forEach(pedido => {
+          const fechaPedido = pedido.getAttribute('fecha');
+
+          // Mostrar u ocultar según la fecha seleccionada
+          pedido.style.display = fechaSeleccionada === '' || fechaPedido === fechaSeleccionada ? 'table-row' : 'none';
+        });
+      }
+       
+      //evento para que cuando se pinche un pedido, se muestre la fila asociado a el con las card de posiciones
+      document.addEventListener('DOMContentLoaded', function () {
+        const pedidos = document.querySelectorAll('.pedido-info');
+        pedidos.forEach(pedido => {
+          pedido.addEventListener('click', function () {
+            const posicionesInfo = this.nextElementSibling;
+            posicionesInfo.style.display = posicionesInfo.style.display === 'none' ? 'table-row' : 'none';
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+{% endblock %}

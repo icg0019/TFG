@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block title %} Calculo de pedidos {% endblock %} {%
+block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <div class="custom-bg" role="alert">
+        <h4 class="alert-heading">Penalización por brik</h4>
+        <p class="mb-0">
+          <span class="display-4">{{ penalizacion }} €</span>
+          <br />
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="text-center">Pedidos</h1>
+
+  <div class="row">
+    {% for pedido in pedidos_por_cantidades %}
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-header text-center">Pedido {{ loop.index }}</div>
+        <ul class="list-group list-group-flush">
+          {% for matnr, cantidad in pedido.items() %}
+          <li class="list-group-item">
+            {{ cantidad }} unidades del material {{ matnr }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12 text-center">
+      <form action="{{ url_for('exportar_csv') }}" method="post">
+        <input type="hidden" name="df_csv" value="{{ df_csv.to_json() }}" />
+        <button type="submit" class="btn btn-success">Descargar CSV</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

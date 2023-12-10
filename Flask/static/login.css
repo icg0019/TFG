@@ -1,0 +1,79 @@
+body {
+  background-image: url('/static/img/fondo2.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-container {
+  background-color: rgba(241, 247, 243, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(137, 127, 127, 0.5);
+  max-width: 600px; /* Ancho máximo del formulario */
+  min-width: 400px;
+}
+
+.main-container img {
+  display: block;
+  margin: auto;
+}
+
+.main-container h1 {
+  text-align: center;
+}
+
+/* Estilos para los inputs y labels */
+.main-container .form-floating {
+  margin-bottom: 15px;
+}
+
+.entrada_datos {
+  position: relative;
+}
+
+.entrada_datos input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.entrada_datos label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+  color: #555;
+  transition: all 0.3s ease-out;
+  pointer-events: none;
+}
+
+.main-container .form-control {
+  border-radius: 20px;
+}
+
+.main-container label {
+  font-size: 14px;
+}
+
+/* Estilos para el botón de inicio de sesión */
+.main-container button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.titulo-login {
+  font-family: 'Verdana', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c3e50; /* Color de texto */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra del texto */
+  margin-bottom: 20px; /* Espaciado inferior */
+}
