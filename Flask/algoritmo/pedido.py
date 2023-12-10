@@ -55,11 +55,12 @@ class Pedido:
     #Funcion para añadir los productos compatibles cuyos tramos mínimos están cubiertos
     def anadir_prod_no_necesarios(self, producto_a_empezar): 
         posible=producto_a_empezar
+        print(f"Possssssssssss {posible}" )
         while(len(self.pedido)<self.pistas): 
-            self.pedido.append(self.tramos_df.index[posible])
-            print(f"DDDDDDDDDDDDDDDDDDDDDDDDDDD{self.tramos_df.at[self.tramos_df.index[posible], 'Apariciones']}")
-            self.tramos_df.at[self.tramos_df.index[posible], "Apariciones"]+=1 #Hacer ejemplos
-            posible+=1.
+            self.pedido.append(self.tramos_df.index[int(posible)]) #coge el indice
+            print(f"DDDDDDDDDDDDDDDDDDDDDDDDDDD{self.tramos_df.loc[self.tramos_df.index[int(posible)], 'Apariciones']}")
+            self.tramos_df.loc[self.tramos_df.index[int(posible)], "Apariciones"]=1 #Hacer ejemplos
+            posible+=1
             if(posible>len(self.tramos_df)-1): 
                 posible=producto_a_empezar
 

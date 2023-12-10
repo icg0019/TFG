@@ -12,16 +12,16 @@ import json
 from werkzeug.exceptions import BadRequestKeyError
 from models.models import ModelUser
 from models.usuario import User
-
+import logging
 
 app=Flask(__name__)
 #csrf=CSRFProtect()
 login_manager_app = LoginManager(app)
+app.secret_key='LDfj/8adf'
 
 @login_manager_app.user_loader
 def load_user(id):
   return ModelUser.get_by_id(id)
-
 
 def obtener_Datos(csv): 
   carpeta_actual = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +42,11 @@ def login ():
     
     if(logged_user != None): 
       if(logged_user!=False): 
-        login_user(logged_user) 
+        try: 
+          login_user(logged_user) 
+        except Exception as e:
+          logging.error(f"Error: {e}") 
+          
         return redirect(url_for('inicio')) 
       else: 
         error = 'Contraseña incorrecta. Inténtalo de nuevo.'
@@ -60,6 +64,7 @@ def logout():
 
 
 @app.route("/inicio")
+@login_required
 def inicio(): 
   return render_template('inicio.html') 
   
@@ -172,10 +177,12 @@ def exportar_csv_historico():
         return 'Error en la solicitud', 400  # Retorna un código de estado HTTP 400 Bad Request
 
 #Funcion para controlar que no esta logueado
+@app.errorhandler(401)
 def status_401(error): 
   return redirect(url_for('login'))
     
 #Funcion para controlar cuando intentan entrar a una url que no existe
+@app.errorhandler(404)
 def status_404(error): 
   return render_template('error404.html')
   
