@@ -80,7 +80,6 @@ def crearconexionPedidos(nombre_tabla):
   df.to_csv('Historico_Pedidos.csv', index=False)
   return df
 
-
 if __name__ == "__main__":
   #df=crearconexion('Necesidades_briks_SLIM')
   df=crearconexionPedidos("PEDIDOS_BRIKS")
