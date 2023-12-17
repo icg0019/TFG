@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} Calculo de pedidos {% endblock %}
 {% block content %}
+
+<div class="container text-center">
+  <h2 class="mb-4">Pedidos SAP</h2>
+</div>
   <body>
     <!-- Formulario para seleccionar pedidos y exportar a CSV -->
     <form method="post" action="{{ url_for('exportar_csv_historico') }}">
@@ -13,7 +17,11 @@
         <label for="fecha">Filtrar por Fecha:</label>
         <input type="date" id="fecha" />
         <button type="button" onclick="filtrarPorFecha()">Filtrar</button>
+        <button type="button" onclick="borrarFecha()">Borrar Fecha</button>
       </div>
+<div>
+  <button type="button" onclick="seleccionarTodos()">Seleccionar Todos</button>
+  </div>
 
       <table class="table table-bordered mt-3">
         <thead>
@@ -54,30 +62,52 @@
       </table>
     </form>
 
-    <script>
-      function filtrarPorFecha() {
-        const fechaSeleccionada = document.getElementById('fecha').value;
-        const pedidos = document.querySelectorAll('.pedido-info');
+<script>
+  function filtrarPorFecha() {
+    const fechaSeleccionada = document.getElementById('fecha').value;
+    const pedidos = document.querySelectorAll('.pedido-info');
 
-        pedidos.forEach(pedido => {
-          const fechaPedido = pedido.getAttribute('fecha');
+    pedidos.forEach(pedido => {
+      const fechaPedido = pedido.getAttribute('fecha');
 
-          // Mostrar u ocultar según la fecha seleccionada
-          pedido.style.display = fechaSeleccionada === '' || fechaPedido === fechaSeleccionada ? 'table-row' : 'none';
-        });
+      // Mostrar u ocultar según la fecha seleccionada
+      pedido.style.display = fechaSeleccionada === '' || fechaPedido === fechaSeleccionada ? 'table-row' : 'none';
+    });
+  }
+
+  function borrarFecha() {
+    // Limpiar el valor del campo de fecha
+    document.getElementById('fecha').value = '';
+
+    // Refiltrar por fecha
+    filtrarPorFecha();
+  }
+  function seleccionarTodos() {
+    const fechaSeleccionada = document.getElementById('fecha').value;
+    const checkboxes = document.querySelectorAll('.pedido-info input[type="checkbox"]');
+    const pedidos = document.querySelectorAll('.pedido-info');
+
+    checkboxes.forEach((checkbox, index) => {
+      const fechaPedido = pedidos[index].getAttribute('fecha');
+
+      if (fechaSeleccionada === '' || fechaPedido === fechaSeleccionada) {
+        checkbox.checked = !checkbox.checked;
       }
-       
-      //evento para que cuando se pinche un pedido, se muestre la fila asociado a el con las card de posiciones
-      document.addEventListener('DOMContentLoaded', function () {
-        const pedidos = document.querySelectorAll('.pedido-info');
-        pedidos.forEach(pedido => {
-          pedido.addEventListener('click', function () {
-            const posicionesInfo = this.nextElementSibling;
-            posicionesInfo.style.display = posicionesInfo.style.display === 'none' ? 'table-row' : 'none';
-          });
-        });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const pedidos = document.querySelectorAll('.pedido-info');
+    pedidos.forEach(pedido => {
+      pedido.addEventListener('click', function () {
+        const posicionesInfo = this.nextElementSibling;
+        posicionesInfo.style.display = posicionesInfo.style.display === 'none' ? 'table-row' : 'none';
       });
-    </script>
+    });
+  });
+</script>
+</body>
+</html>
   </body>
 </html>
 

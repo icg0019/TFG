@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block title %} Acerca de la Aplicación {% endblock
+%} {% block content %}
+<div class="container text-center">
+  <h2 class="mb-4">Acerca de la Aplicación</h2>
+</div>
+
+<div class="container">
+  <p>
+    En esta sección, se explica el funcionamiento de cada pestaña de la
+    aplicación:
+  </p>
+  <ul>
+    <li>
+      <strong>Briks Edge:</strong> en esta seccion se hace el cálculo de todas
+      las necesidades de los briks con jerarquia ENBRIED de SAP cuyas
+      necesidades en el MRP sean mayores que 0 entre las 2 y 5 semanas próximas
+      y el cálculo de los colores en función del maestro que modifica el
+      departamento de marketing. Mostrará todas las necesidades para que el
+      usuario puede puntearlas y se permitirá generar los pedidos optimos en
+      funcion de las necesidades que haya. El usuario tiene un botón "Generar
+      pedidos" que generará mediante un algoritmo de optimización todos los
+      pedidos que hay que realizar a TETRAPAK y permitirá descargar un csv con
+      esos pedidos para que el usuario pueda importarlo directamente en SAP, sin
+      tener que pasarlo a mano.
+    </li>
+
+    <li>
+      <strong>Briks SLIM:</strong> en esta seccion se hace el cálculo de todas
+      las necesidades de los briks con jerarquia ENBRISL de SAP cuyas
+      necesidades en el MRP sean mayores que 0 entre las 2 y 5 semanas próximas
+      y el cálculo de los colores en función del maestro que modifica el
+      departamento de marketing. Mostrará todas las necesidades para que el
+      usuario puede puntearlas y se permitirá generar los pedidos optimos en
+      funcion de las necesidades que haya. El usuario tiene un botón "Generar
+      pedidos" que generará mediante un algoritmo de optimización todos los
+      pedidos que hay que realizar a TETRAPAK y permitirá descargar un csv con
+      esos pedidos para que el usuario pueda importarlo directamente en SAP, sin
+      tener que pasarlo a mano.
+    </li>
+
+    <li>
+      <strong>Briks 500:</strong> en esta seccion se hace el cálculo de todas
+      las necesidades de los briks con jerarquia ENBRISL de SAP cuyas
+      necesidades en el MRP sean mayores que 0 entre las 2 y 5 semanas próximas
+      y el cálculo de los colores en función del maestro que modifica el
+      departamento de marketing. Mostrará todas las necesidades para que el
+      usuario puede puntearlas y se permitirá generar los pedidos optimos en
+      funcion de las necesidades que haya. El usuario tiene un botón "Generar
+      pedidos" que generará mediante un algoritmo de optimización todos los
+      pedidos que hay que realizar a TETRAPAK y permitirá descargar un csv con
+      esos pedidos para que el usuario pueda importarlo directamente en SAP, sin
+      tener que pasarlo a mano.
+    </li>
+
+    <li>
+      <strong>PEDIDOS SAP:</strong> en esta seccion mostrará los pedidos de SAP
+      con el proveedor TETRAPAK (52463) y permitirá al usuario descargar en csv
+      los que seleccione, para poder exportar en csv todos los pedidos que haya
+      que hacer en la web de TETRAPAK y que el usuario pueda hacer la
+      importacion en ella, sin necesidad de ponerla a mano y evitar así errores
+      humanos. Esta seccion permite seleccionar por fecha e incluye un botón de
+      seleccionar todos para cuando haya muchos pedidos.
+    </li>
+  </ul>
+
+  <p>
+    Los datos se actualizan los martes y miércoles una vez cada 15 minutos, ya
+    que son los días que se realizan los pedidos. El resto de días se
+    actualizará una vez al día, a las 6:00 am.
+  </p>
+
+  <p>
+    Si encuentras algún problema con la aplicación, no dudes en ponerte en
+    contacto con
+    <a href="mailto:irene.cuadrado@frias.es">irene.cuadrado@frias.es</a>.
+  </p>
+</div>
+<div class="text-center">
+  <button type="submit" class="btn btn-success style-button">
+    Descargar pdf
+  </button>
+</div>
+{% endblock %}

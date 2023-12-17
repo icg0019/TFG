@@ -13,6 +13,7 @@ from werkzeug.exceptions import BadRequestKeyError
 from models.models import ModelUser
 from models.usuario import User
 import logging
+from datetime import datetime
 
 app=Flask(__name__)
 #csrf=CSRFProtect()
@@ -22,6 +23,7 @@ app.secret_key='LDfj/8adf'
 @login_manager_app.user_loader
 def load_user(id):
   return ModelUser.get_by_id(id)
+
 
 def obtener_Datos(csv): 
   carpeta_actual = os.path.dirname(os.path.abspath(__file__))
@@ -74,7 +76,7 @@ def inicio():
 def briks_edge(): 
   df=obtener_Datos('edge.csv')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
-  return render_template('briks.html', df=df, df_mostrar=df_mostrar)
+  return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="EDGE")
 
 
 @app.route("/Briks_500")
@@ -82,14 +84,14 @@ def briks_edge():
 def brik_500(): 
   df=obtener_Datos('500.csv')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))]#para mostrar, quitamos las que no tienen ningun tipo de necesidad
-  return render_template('briks.html', df=df, df_mostrar=df_mostrar)
+  return render_template('briks.html', df=df, df_mostrar=df_mostrar,tipobrik="500")
 
 @app.route("/Briks_slim")
 @login_required
 def briks_slim(): 
   df=obtener_Datos('slim.csv')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
-  return render_template('briks.html', df=df, df_mostrar=df_mostrar)
+  return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="SLIM")
 
 @app.route('/generar_pedidos', methods=['GET','POST'])
 @login_required
@@ -126,12 +128,15 @@ def exportar_csv():
   df.to_csv(csv_buffer, index=False, encoding='utf-8')
   csv_buffer.seek(0)
 
+  ahora=datetime.now()
+  timestamp = ahora.strftime('%Y%m%d_%H%M%S') 
+  nombre_archivo = f'pedidos{timestamp}.csv' 
   # Devuelvo el archivo CSV de descarga
   return send_file(
       csv_buffer,
       mimetype='text/csv',
       as_attachment=True,
-      download_name='pedidos.csv'
+      download_name=nombre_archivo
     )
   
   
@@ -164,17 +169,28 @@ def exportar_csv_historico():
         csv_buffer = BytesIO()
         df.to_csv(csv_buffer, index=False, encoding='utf-8') 
         csv_buffer.seek(0)
-
+        
+        ahora=datetime.now()
+        timestamp = ahora.strftime('%Y%m%d_%H%M%S') 
+        nombre_archivo = f'pedidos_sap{timestamp}.csv' 
         # Devuelvo el archivo CSV a descargar
         return send_file(
             csv_buffer,
             mimetype='text/csv',
             as_attachment=True,
-            download_name='Pedidos_SAP.csv'
+            download_name=nombre_archivo
           )
   except BadRequestKeyError as e:
         print(f'Error: {e}')
         return 'Error en la solicitud', 400  # Retorna un código de estado HTTP 400 Bad Request
+
+
+#Pagina acerca de 
+@app.route("/Acerca_de")
+@login_required
+def acerca_de(): 
+  return render_template('acerca_de.html')
+
 
 #Funcion para controlar que no esta logueado
 @app.errorhandler(401)
