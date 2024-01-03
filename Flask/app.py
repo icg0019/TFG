@@ -1,9 +1,9 @@
 from flask import Flask, render_template, url_for, request,send_file,redirect, flash
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, logout_user, current_user
-from flask_mysqldb import MySQL, MySQLdb
 from algoritmo.conexioncsv import ConexionCSV
-from algoritmo.algoritmo import optimizacion, penalizacion_por_brik, df_a_exportar
+from algoritmo.registro_algoritmo import Registro
+from algoritmo.algoritmo import optimizacion, penalizacion_por_brik, pedidos_a_exportar
 import os
 import pandas as pd
 from io import BytesIO
@@ -24,7 +24,7 @@ app.secret_key='LDfj/8adf'
 def load_user(id):
   return ModelUser.get_by_id(id)
 
-
+#Función para obtener datos segun de que origen
 def obtener_Datos(csv): 
   carpeta_actual = os.path.dirname(os.path.abspath(__file__))
   ruta_csv = os.path.join(carpeta_actual, 'algoritmo','Necesidades_origenes', csv)
@@ -76,6 +76,7 @@ def inicio():
 def briks_edge(): 
   df=obtener_Datos('edge.csv')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
+
   return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="EDGE")
 
 
@@ -91,6 +92,7 @@ def brik_500():
 def briks_slim(): 
   df=obtener_Datos('slim.csv')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
+  
   return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="SLIM")
 
 @app.route('/generar_pedidos', methods=['GET','POST'])
@@ -101,7 +103,8 @@ def generar_pedidos():
     return redirect(url_for('inicio'))
   df_json = request.form.get('df')# Recibo el DataFrame desde el formulario
   df = pd.read_json(df_json)
-  pedidos = optimizacion(df) #genero los pedidos optimos
+  tipobrik = request.form.get('tipobrik')
+  pedidos = optimizacion(df, tipobrik) #genero los pedidos optimos
   penalizacion=round(penalizacion_por_brik(pedidos),4) #calculo la penalizacion
 
   #Calculamos los pedidos por cantidades para mostrarselos al usuario
@@ -109,7 +112,7 @@ def generar_pedidos():
   for pedido in pedidos: 
     pedidos_por_cantidades.append(pedido.cantidad_por_producto())
   pedidos_por_cantidades = sorted(pedidos_por_cantidades, key=lambda x: len(x), reverse=True) #les ordeno para que mejore la visualizacoin
-  df_csv=df_a_exportar(pedidos) #genero el df listo para exportarlo
+  df_csv=pedidos_a_exportar(pedidos) #genero el df listo para exportarlo
   return render_template('generar_pedidos.html', pedidos_por_cantidades=pedidos_por_cantidades, penalizacion=penalizacion, df_csv=df_csv)
   
   

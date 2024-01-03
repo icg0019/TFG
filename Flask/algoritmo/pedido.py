@@ -1,27 +1,35 @@
 import pandas as pd
-#import conjuntoproductos
+
+try:
+  from registro_algoritmo import Registro
+except ImportError:
+    from .registro_algoritmo import Registro
 
 class Pedido:
-    def __init__(self, productos, tramos_df):
+    def __init__(self, productos, tramos_df, registro):
         self.pedido = []
         self.tramos = 1
         self.tramos_superados = [0,0,0,0,0]
         self.pistas = 5 
         self.productos = productos
         self.tramos_df = tramos_df
+        self.registro=registro
 
     #Funcion para iniciar un pedido
     def iniciar_pedido(self,productos_a_revisar): 
+        self.registro.registrar(f"Vamos a inicializar el pedido con el primer producto {self.productos.sacar_indice_producto(0)}")
         producto=self.productos.sacar_indice_producto(0)#Iniciamos el primer producto que tiene que quedar cubierto
         self.pedido.append(producto) #añadimos el primer producto al pedido
         self.tramos_df.loc[producto, "Apariciones"] =  1 #actualizamos las apariciones de ese producto
-        print(f"Máximos inicializando en el primer producto {self.tramos_df}")
+        self.tramos_df["Apariciones"] = self.tramos_df["Apariciones"].fillna(0)
         num_productos=1
-  
+        
         #calculamos el df de los productos compatibles y lo ordenamos
         df_tramos_compatibles=pd.DataFrame(self.tramos_df.loc[self.tramos_df['Tramos_minimos'] != 0, ['Tramos_minimos', 'Tramos_maximos']])
         df_tramos_compatibles=df_tramos_compatibles.sort_values(by=['Tramos_minimos', "Tramos_maximos"], ascending=[True, True])
-        print(f"Df nuevo de tramos compatibles ordenados{df_tramos_compatibles}")
+        self.registro.registrar(f"Estas son las necesidades compatibles con el primer producto ordenadas por prioridad")
+        self.registro.registrar(f"{self.tramos_df}")
+       
         
         #ponemos los productos que se puedan 
         for indice, fila in df_tramos_compatibles.iterrows():
@@ -29,23 +37,20 @@ class Pedido:
                 self.pedido.append(indice)
                 self.tramos_df.loc[indice, "Apariciones"] =  1
                 num_productos+=1
-            print(self.tramos_df)
+         
             if(num_productos>=productos_a_revisar or len(self.pedido)>=self.pistas): 
                 break
 
     #Funcion para añadir productos repetidos que cumplan los tramos del pedido
     def anadir_productos_repetidos(self, productos_a_revisar): 
         revision=1
-        print(f"Pedido antes de añadir duplicados {self.pedido}")
         
         while len(self.pedido)<self.pistas and revision!=0: 
             posible=0
             revision=0
             #Damos una vuelta por los productos a revisar y si se puede añadir se añade. 
             while len(self.pedido)<5 and posible<productos_a_revisar: 
-                print(f"Vamos a añadir al pedido {self.pedido} un posible elemento ")
-                print(f"Estamos en el elemento {self.pedido[posible]} y vamos a ver si {(self.tramos_df['Apariciones'].loc[self.pedido[posible]]+1)*self.tramos} es <= {float(self.tramos_df['Tramos_maximos'].loc[self.pedido[posible]])}")
-                
+
                 if (self.tramos_df['Apariciones'].loc[self.pedido[posible]]+1)*self.tramos<=float(self.tramos_df['Tramos_maximos'].loc[self.pedido[posible]]):
                     self.pedido.append(self.pedido[posible])
                     self.tramos_df.loc[self.pedido[posible], "Apariciones"]+=1
@@ -55,11 +60,10 @@ class Pedido:
     #Funcion para añadir los productos compatibles cuyos tramos mínimos están cubiertos
     def anadir_prod_no_necesarios(self, producto_a_empezar): 
         posible=producto_a_empezar
-        print(f"Possssssssssss {posible}" )
+        
         while(len(self.pedido)<self.pistas): 
             self.pedido.append(self.tramos_df.index[int(posible)]) #coge el indice
-            print(f"DDDDDDDDDDDDDDDDDDDDDDDDDDD{self.tramos_df.loc[self.tramos_df.index[int(posible)], 'Apariciones']}")
-            self.tramos_df.loc[self.tramos_df.index[int(posible)], "Apariciones"]=1 #Hacer ejemplos
+            self.tramos_df.loc[self.tramos_df.index[int(posible)], "Apariciones"]+=1 #Hacer ejemplos
             posible+=1
             if(posible>len(self.tramos_df)-1): 
                 posible=producto_a_empezar
@@ -68,31 +72,36 @@ class Pedido:
     #Funcion que crear un pedido.
     def crearPedido(self, no_satisfechos,inicio): 
         self.iniciar_pedido(no_satisfechos) #iniciamos el pedido
-        print(f"Pedido Inicial {self.pedido}")
-        print(f"Pedido Inicial {self.tramos_df}")
-        self.anadir_productos_repetidos(no_satisfechos) #añadimos productos repetidos si se puede 
-        print(f"Pedido productos repetidos {self.pedido}")
-        print(f"Pedido productos repetidos {self.tramos_df}")
-        self.anadir_prod_no_necesarios(inicio) #añadimos productos que los tramos mínimos están superados
-        print(f"Pedido superando tramos {self.pedido}")
-        print(f"Pedido productos repetidos {self.tramos_df}")
-        #breakpoint()
+        self.registro.registrar(f"Pedido Inicial {self.pedido}")
+        
+        if(len(self.pedido)!=5):
+            self.anadir_productos_repetidos(no_satisfechos) #añadimos productos repetidos que tengan necesidades mínimas
+            self.registro.registrar(f"Pedido productos repetidos {self.pedido}")
+            if(len(self.pedido)!=5): 
+                self.anadir_prod_no_necesarios(inicio) #añadimos productos que los tramos mínimos están superados
+                self.registro.registrar(f"Pedido superando tramos minimos: {self.pedido}")
+        
+        self.registro.registrar(f"Las apariciones serían las siguientes: ")
+        self.registro.registrar(f"{self.tramos_df}")
+ 
         #una vez tenemos completado el pedido intentamos ir aumentando los tramos hasta que no se pueda
         self.aumentarTramos(self.tramos_df)
-        print(f"Tramos del pedido {self.tramos}")
+
 
     #Funcion para ir aumentando los tramos
     def aumentarTramos(self,tramos_df): 
-        tramos_df["Apariciones"] = tramos_df["Apariciones"].fillna(0) #rellenamos los valores a Nan con 0 para poder operar correctamente
+        #tramos_df["Apariciones"] = tramos_df["Apariciones"].fillna(0) #rellenamos los valores a Nan con 0 para poder operar correctamente
         while True: 
             self.tramos+=1
-            print(f"Intento aumnentar los tramos a {self.tramos}")
-            print(f"TRAMOS {tramos_df}")
             aumentar_tramo = (float(self.tramos) * tramos_df["Apariciones"].astype(float) <= tramos_df['Tramos_maximos'].astype(float)).all() #comprobamos que se pueda aumentar los tramos
-            print(f"Aumentar tramos {aumentar_tramo}")
+
             if aumentar_tramo==False:
+                self.registro.registrar(f"Intento aumentar tramos a {self.tramos} pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con {self.tramos-1} tramos.")
                 break
+            else: 
+                self.registro.registrar(f"Intento aumentar tramos a {self.tramos} y lo consigo.")
         self.tramos-=1
+        
 
     #Funcion que intenta cambiar los productos para aumentar los tramos del pedido
     def mejorarPedido_tramos(self): 
@@ -100,81 +109,73 @@ class Pedido:
         tramos_df_temporal=self.tramos_df.copy()
         primer_elemento=self.pedido[0] #nos quedamos con el primer elemento
         #buscamos el elemento/elementos cuyo valor de tramos maximos sea tramos
-        print(f"Tramos{self.tramos}")
+     
         productos_a_cambiar1=self.tramos_df[self.tramos_df['Tramos_maximos']<(self.tramos+1)*self.tramos_df['Apariciones']] #se hace una lista con los productos que están impidiendo hacer el cambio.
         productos_a_cambiar=productos_a_cambiar1.index.tolist() 
         #Nos quedamos solo con los que estén en el pedido
         productos_a_cambiar = list(set(self.pedido) & set(productos_a_cambiar))
-        print(f"Productos antes del set {productos_a_cambiar}")
-        print(f"Se puede aumentar tramos, ya que tiene {productos_a_cambiar} productos a cambiar")
+       
+        self.registro.registrar(f"Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene {productos_a_cambiar} productos que bloquean el aumento de tramos.")
     
         #Por cada posible cambio, vemos por que elemento podemos cambiar. si se puede cambiar, se hace el cambio
         cambios=0
         for i in productos_a_cambiar:
             for indice, fila in tramos_df_temporal.iterrows(): 
-                print(f"Producto {i} se intenta sustituir por producto {indice}")
+                self.registro.registrar(f"Producto {i} se intenta sustituir por producto {indice}")
+                
                 tramos_maximos=self.productos.get_tramos_maximos(indice)
                 if( indice not in productos_a_cambiar and float(tramos_maximos)>=(self.tramos+1)*(float(tramos_df_temporal.loc[indice, "Apariciones"])+1)): 
-                    print(f"Tramos_df temporal antes de cambiar el {tramos_df_temporal.loc[i, 'Apariciones']} por {i}")
+
+                    
                     tramos_df_temporal.loc[i, "Apariciones"]-=1
-                    print(f"Tramos_df temporal despues de cambiar las apariciones {tramos_df_temporal.loc[i, 'Apariciones']} por {i}")
                     indice_pedido=pedido_temporal.index(i)
-                    print(f"Indice temporal antes de cambiar el {pedido_temporal[indice_pedido]} por {indice_pedido}")
                     pedido_temporal[indice_pedido]=indice
-                    print(f"Indice temporal antes de cambiar el {tramos_df_temporal}")
                     tramos_df_temporal.loc[indice, "Apariciones"]+=1
-                    print(f"Indice temporal despues de cambiar el {tramos_df_temporal}")
                     cambios+=1
-                    print(f"He hecho un cambio de producto {i} por {indice}")
+                    self.registro.registrar(f"He hecho un cambio de producto {i} por {indice}")
+                   
                     break     
-            print(f"Tramos modificado: {tramos_df_temporal}")
-            print(f"Pedido modificado: {pedido_temporal}")
-        #breakpoint()
+
  
         if cambios==len(productos_a_cambiar): 
-            print(f"He conseguido cambiar los pedidos, productos a cambiar {productos_a_cambiar}")
-            #breakpoint()
+            self.registro.registrar(f"He conseguido cambiar estos productos {productos_a_cambiar} que bloqueaban el aumento de tramos. El nuevo pedido es {pedido_temporal} y las apariciones modificadas son:")
+            self.registro.registrar(f"{tramos_df_temporal}")
+            
+
             #Comprobamos que el primer elemento sea el mismo que antes, si no es asi, se mueve al primer lugar para seguirle teniendo de referencia, ya que es el que queremos completar.
             if(primer_elemento!=pedido_temporal[0]): 
                 pedido_temporal.insert(0,pedido_temporal.pop(pedido_temporal.index(primer_elemento)))
             return pedido_temporal, tramos_df_temporal
-        print(f"No he conseguido cambiar los pedidos, productos a cambiar {productos_a_cambiar}")
+        self.registro.registrar(f"No he conseguido cambiar todos los productos que bloqueaban el aumento de tramos{productos_a_cambiar}")
+      
         #breakpoint()
         return self.pedido, self.tramos_df
     
     #Funcion para mejorar el pedido en pedido que tiene mas de 5 compatibilidades
     def mejorarpedido(self): 
-        print(f"Mejorar pedido {self.pedido} con tramos {self.tramos}")
-        print(f"Mejorar pedido tramos_df {self.tramos_df}")
-        
         #Si el maximo del primer elemento es igual a tramos, los tramos minimos no se pueden mejorar. Pero intentamos cambiar de los otros 4 elementos a uno que supere los tramos minimos, para poder pasarle a satisfecho
         tramos_maximos_0=self.productos.get_tramos_maximos(self.pedido[0])
         if(float(tramos_maximos_0)<=self.tramos):
-            #revisamos el numero de apariciones del primer elemento. Si el numero de interacciones es mayor que uno, intentamos reducir el numero de apariciones y ver si podemos mejorar el pedido 
-            if(float(self.tramos_df.loc[self.pedido[0], "Apariciones"])>1): 
-                print(5)
-                
-            print("No se puede aumentar tramos, pero vamos a intentar aumentar el número de satisfechos")
+            #revisamos el numero de apariciones del primer elemento. Si el numero de interacciones es mayor que uno, intentamos reducir el numero de apariciones y ver si podemos mejorar el pedido                 
+            self.registro.registrar(f"El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.")
     
         #si no, intentamos quitar el elemento del pedido que nos esta bloqueando y sustituirlo por otro con un numero de tramos máximos mayor.  
         else: 
             lista_pedido_tramos_df=self.mejorarPedido_tramos() 
             pedido_temporal=lista_pedido_tramos_df[0]
             tramos_df_temporal=lista_pedido_tramos_df[1]
-            print(f"Pedido temporal {pedido_temporal} y pedido normal {self.pedido}")
-            print(f"tramos_df_temporal: {tramos_df_temporal}")
+
+            
             if(self.pedido!=pedido_temporal): #Si he conseguido cambiar los productos del pedido
-                print("He entrado en diferente pedidos")
                 self.pedido=pedido_temporal #cambio el pedido 
                 self.tramos_df=tramos_df_temporal #cambio el tramos_df
-                print(f"Df modificado final {self.tramos_df}")
-                print(f"Pedido moficado {self.pedido}")
+
+                
                 self.aumentarTramos(self.tramos_df) #intento aumentar tramos
-                print(f"Tramos {self.tramos}")
                 #breakpoint()
       
         self.pedido.append(self.tramos)   
-        print(f"Pedido tramos después del bucle{self.pedido}")
+
         return self.pedido, self.tramos_df
 
     #Funcion para ir mejorandoPedidos en bucle hasta que no se pueda mas 
@@ -195,9 +196,9 @@ class Pedido:
                 pedido_original=self.pedido.copy()
                 self.tramos=self.pedido[-1]
                 self.pedido.pop(-1)
-        print(f"Este es el `pedido Óptimo {self.pedido} y los tramos {self.tramos}")
+      
+        self.registro.registrar(f"PEDIDO OPTIMO {self.pedido} y los tramos {self.tramos}")
         #breakpoint()
-        
         
     #Funcion que devuelve los tramos 
     def devolver_cantidad(self): 
@@ -224,7 +225,7 @@ class Pedido:
     
     #Funcion que imprime el pedido 
     def imprimir_pedido(self): 
-        print(f"Pedido {self.pedido} con tramos {self.tramos}")
+        self.registro.registrar(f"Pedido {self.pedido} con tramos {self.tramos}")
     
     #Funcion que calcula la penalizacion del pedido
     def calcular_penalizacion(self): 
@@ -248,4 +249,13 @@ class Pedido:
             matnr = self.productos.get_matnr(indice)
             devolver[matnr] =  "{:,.0f}".format(cantidad).replace(",", ".")
         return devolver
-            
+    
+    
+    #Funcion para registrar los valores iniciales del pedido
+    def explicar_inicio(self): 
+        self.registro.registrar(f"HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:")
+        self.registro.registrar(f"Productos")
+        self.registro.registrar(f"{ self.productos.get_productos()}")
+        self.registro.registrar(f"Compatibilidades")
+        self.registro.registrar(f"{self.productos.get_compatibilidades()}")
+        

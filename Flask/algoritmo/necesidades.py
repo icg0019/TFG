@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 
+
 class Necesidades:
     def __init__(self, df):
         self.productos = self.crear_conjunto_productos(df)
@@ -10,7 +11,7 @@ class Necesidades:
         self.actualizarSatifecho()#Actualizamos la columna de satisfecho
         self.ordenarProductos()  #Ordenamos los productos en funcion del numero de compatibilidades
     
-    
+
     #Funcion para crear el conjunto de productos, modificando las necesidades por tramos
     def crear_conjunto_productos(self,df): 
       df['Necesidades_max'] = (df['Necesidades_max'] / 17200).apply(lambda x: math.ceil(x))
@@ -51,13 +52,6 @@ class Necesidades:
               matriz_df.at[j, i] = 0
       return matriz_df
     
-    #Funcion que imprime la matriz de productos
-    def imprimir_productos(self): 
-      print(self.productos)
-      
-    #Funcion que imprime la matriz de compatibilidad
-    def imprimir_compatibilidad(self):
-      print(self.compatibilidades)
       
     #Funcion para calcular un df con los productos compatibles del elemento escogido
     def calcular_prod_compatibles(self,indice):
@@ -128,3 +122,14 @@ class Necesidades:
     #Funcion para sacar la referencia del producto del indice 
     def get_referencia(self, indice): 
       return self.productos.loc[indice, "Referencia"]
+    
+    #Funcion para coger los productos
+    def get_productos(self): 
+      return self.productos
+    
+    #Funcion para coger las compatibilidades
+    def get_compatibilidades(self): 
+      return self.compatibilidades
+    
+    
+    

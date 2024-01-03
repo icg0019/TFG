@@ -16,7 +16,15 @@ block content %}
   </div>
 
   <h1 class="text-center">Pedidos generados</h1>
-
+  <div class="row mt-4">
+    <div class="col-md-12 text-center">
+      <form action="{{ url_for('exportar_csv') }}" method="post">
+        <input type="hidden" name="df_csv" value="{{ df_csv.to_json() }}" />
+        <button type="submit" class="btn btn-success">Descargar CSV</button>
+      </form>
+    </div>
+  </div>
+</br>
   <div class="row">
     {% for pedido in pedidos_por_cantidades %}
     <div class="col-md-4 mb-4">
@@ -32,15 +40,6 @@ block content %}
       </div>
     </div>
     {% endfor %}
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-md-12 text-center">
-      <form action="{{ url_for('exportar_csv') }}" method="post">
-        <input type="hidden" name="df_csv" value="{{ df_csv.to_json() }}" />
-        <button type="submit" class="btn btn-success">Descargar CSV</button>
-      </form>
-    </div>
   </div>
 </div>
 {% endblock %}

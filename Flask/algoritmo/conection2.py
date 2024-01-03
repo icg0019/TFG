@@ -81,5 +81,6 @@ def crearconexionPedidos(nombre_tabla):
   return df
 
 if __name__ == "__main__":
-  #df=crearconexion('Necesidades_briks_SLIM')
+  #df=crearconexion('Necesidades_briks_SLI
+  # M')
   df=crearconexionPedidos("PEDIDOS_BRIKS")

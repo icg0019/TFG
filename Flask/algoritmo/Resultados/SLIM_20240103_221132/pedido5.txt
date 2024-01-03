@@ -1,0 +1,506 @@
+
+HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:
+
+Productos
+
+       MATNR                              REFERENCIA      C1    C2  Tramos_minimos  Tramos_maximos  Satisfecho  Compatibilidad
+10  76230563        BRIK CALDO POLLO COVIRAN 1L SLIM  C1187C  None               3               5           0              56
+15  76230675   BRIK CALDO POLLO IFA ELIGES 1 LT SLIM  P0478C  None               1               1           0              56
+3   76230560        BRIK CALDO POLLO GOURMET 1L SLIM  P0202C  None               3               8           0              57
+0   76230600      BRIK CALDO DE COCIDO DIA 1 LT SLIM    None  None               2               7           0              67
+1   18000134   BRIK CALDO DE POLLO CONSUM 1L SLIM F2    None  None               2              11           0              67
+..       ...                                     ...     ...   ...             ...             ...         ...             ...
+54  76230676        BRIK CALDO COCIDO EROSKI 1L SLIM    None  None               0               0           1              67
+60  76230591     BRIK CALDO VERDURA AUCHAN 1 LT SLIM    None  None               0               0           1              67
+62  18000181  BRIK CALDO PAELLA CARNE AUCHAN 1L SLIM    None  None               0               0           1              67
+63  76230599          BRIK CALDO POLLO DIA 1 LT SLIM    None  None               0               0           1              67
+65  76230577        BRIK CALDO CARNE EROSKI  1L SLIM    None  None               0               0           1              67
+
+[67 rows x 8 columns]
+
+Compatibilidades
+
+    0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  ...  51  52  53  54  55  56  57  58  59  60  61  62  63  64  65  66
+0    1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+1    1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+2    1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+3    1   1   1   1   1   1   0   0   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   0   1   1   1   1   1   1   1   1
+4    1   1   1   1   1   1   0   0   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   0   1   1   1   1   1   1   1   1
+..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ...  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..
+62   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+63   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+64   1   1   1   1   1   1   0   0   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   0   1   1   1   1   1   1   1   1
+65   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1   1
+66   1   1   1   1   1   1   0   0   1   1   1   1   1   1   1   1  ...   1   1   1   1   1   1   1   0   1   1   1   1   1   1   1   1
+
+[67 rows x 67 columns]
+
+Vamos a inicializar el pedido con el primer producto 10
+
+Estas son las necesidades compatibles con el primer producto ordenadas por prioridad
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          0.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          0.0
+13               2               2          0.0
+1                2              11          0.0
+10               3               5          1.0
+15               1               1          0.0
+30               0               2          0.0
+8                2               3          0.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Pedido Inicial [10, 15, 13, 8, 0]
+
+Las apariciones serían las siguientes: 
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          0.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          1.0
+13               2               2          1.0
+1                2              11          0.0
+10               3               5          1.0
+15               1               1          1.0
+30               0               2          0.0
+8                2               3          1.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Intento aumentar tramos a 2 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 1 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [15] productos que bloquean el aumento de tramos.
+
+Producto 15 se intenta sustituir por producto 3
+
+He hecho un cambio de producto 15 por 3
+
+He conseguido cambiar estos productos [15] que bloqueaban el aumento de tramos. El nuevo pedido es [10, 3, 13, 8, 0] y las apariciones modificadas son:
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          1.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          1.0
+13               2               2          1.0
+1                2              11          0.0
+10               3               5          1.0
+15               1               1          0.0
+30               0               2          0.0
+8                2               3          1.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Intento aumentar tramos a 2 y lo consigo.
+
+Intento aumentar tramos a 3 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 2 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [13] productos que bloquean el aumento de tramos.
+
+Producto 13 se intenta sustituir por producto 3
+
+He hecho un cambio de producto 13 por 3
+
+He conseguido cambiar estos productos [13] que bloqueaban el aumento de tramos. El nuevo pedido es [10, 3, 3, 8, 0] y las apariciones modificadas son:
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          2.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          1.0
+13               2               2          0.0
+1                2              11          0.0
+10               3               5          1.0
+15               1               1          0.0
+30               0               2          0.0
+8                2               3          1.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Intento aumentar tramos a 3 y lo consigo.
+
+Intento aumentar tramos a 4 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 3 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [8] productos que bloquean el aumento de tramos.
+
+Producto 8 se intenta sustituir por producto 3
+
+Producto 8 se intenta sustituir por producto 14
+
+Producto 8 se intenta sustituir por producto 17
+
+Producto 8 se intenta sustituir por producto 18
+
+Producto 8 se intenta sustituir por producto 20
+
+Producto 8 se intenta sustituir por producto 21
+
+Producto 8 se intenta sustituir por producto 23
+
+Producto 8 se intenta sustituir por producto 25
+
+Producto 8 se intenta sustituir por producto 26
+
+Producto 8 se intenta sustituir por producto 27
+
+Producto 8 se intenta sustituir por producto 22
+
+Producto 8 se intenta sustituir por producto 29
+
+Producto 8 se intenta sustituir por producto 28
+
+Producto 8 se intenta sustituir por producto 0
+
+Producto 8 se intenta sustituir por producto 13
+
+Producto 8 se intenta sustituir por producto 1
+
+He hecho un cambio de producto 8 por 1
+
+He conseguido cambiar estos productos [8] que bloqueaban el aumento de tramos. El nuevo pedido es [10, 3, 3, 1, 0] y las apariciones modificadas son:
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          2.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          1.0
+13               2               2          0.0
+1                2              11          1.0
+10               3               5          1.0
+15               1               1          0.0
+30               0               2          0.0
+8                2               3          0.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Intento aumentar tramos a 4 y lo consigo.
+
+Intento aumentar tramos a 5 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 4 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [3] productos que bloquean el aumento de tramos.
+
+Producto 3 se intenta sustituir por producto 3
+
+Producto 3 se intenta sustituir por producto 14
+
+Producto 3 se intenta sustituir por producto 17
+
+Producto 3 se intenta sustituir por producto 18
+
+Producto 3 se intenta sustituir por producto 20
+
+Producto 3 se intenta sustituir por producto 21
+
+Producto 3 se intenta sustituir por producto 23
+
+Producto 3 se intenta sustituir por producto 25
+
+Producto 3 se intenta sustituir por producto 26
+
+Producto 3 se intenta sustituir por producto 27
+
+Producto 3 se intenta sustituir por producto 22
+
+Producto 3 se intenta sustituir por producto 29
+
+Producto 3 se intenta sustituir por producto 28
+
+Producto 3 se intenta sustituir por producto 0
+
+Producto 3 se intenta sustituir por producto 13
+
+Producto 3 se intenta sustituir por producto 1
+
+He hecho un cambio de producto 3 por 1
+
+He conseguido cambiar estos productos [3] que bloqueaban el aumento de tramos. El nuevo pedido es [10, 1, 3, 1, 0] y las apariciones modificadas son:
+
+    Tramos_minimos  Tramos_maximos  Apariciones
+3                3               8          1.0
+14               0               1          0.0
+17               0               1          0.0
+18               0               2          0.0
+20               0               2          0.0
+21               0               2          0.0
+23               0               3          0.0
+25               0               3          0.0
+26               0               2          0.0
+27               0               2          0.0
+22               0               2          0.0
+29               0               2          0.0
+28               0               3          0.0
+0                2               7          1.0
+13               2               2          0.0
+1                2              11          2.0
+10               3               5          1.0
+15               1               1          0.0
+30               0               2          0.0
+8                2               3          0.0
+38               0               0          0.0
+16               0               0          0.0
+12               0               0          0.0
+11               0               0          0.0
+9                0               0          0.0
+5                0               0          0.0
+4                0               0          0.0
+2                0               0          0.0
+36               0               0          0.0
+35               0               0          0.0
+63               0               0          0.0
+65               0               0          0.0
+51               0               0          0.0
+50               0               0          0.0
+49               0               0          0.0
+48               0               0          0.0
+46               0               0          0.0
+47               0               0          0.0
+53               0               0          0.0
+43               0               0          0.0
+42               0               0          0.0
+41               0               0          0.0
+40               0               0          0.0
+52               0               0          0.0
+54               0               0          0.0
+55               0               0          0.0
+39               0               0          0.0
+57               0               0          0.0
+59               0               0          0.0
+60               0               0          0.0
+61               0               0          0.0
+62               0               0          0.0
+34               0               0          0.0
+64               0               0          0.0
+56               0               0          0.0
+66               0               0          0.0
+
+Intento aumentar tramos a 5 y lo consigo.
+
+Intento aumentar tramos a 6 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 5 tramos.
+
+El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.
+
+PEDIDO OPTIMO [10, 1, 3, 1, 0] y los tramos 5
