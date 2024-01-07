@@ -23,14 +23,12 @@ class ModelUser():
         # Cierra la conexión
         connection.close()
         if len(rows)!=0:
-          for row in rows: 
-            passd=user.password
-            print(f"ROW{row[1]}    y    {user.password}")
+          for row in rows:
             coincide_password=User.check_password(row[1], user.password)
-            if(coincide_password): 
+            if (coincide_password): 
               user=User(row[0],row[1])
               return user
-            else: 
+            else:
               return False
         else:
           return None
@@ -38,7 +36,7 @@ class ModelUser():
         # Si hay un error, imprime el mensaje de error
         print("Error al intentar conectar a la base de datos:", ex)
         raise Exception(ex)
-      
+
     @classmethod
     def get_by_id(self,user):
       try:
@@ -46,8 +44,7 @@ class ModelUser():
           cursor = connection.cursor()
           cursor.execute("SELECT * FROM Users_Flask WHERE Usuario = ?", user)
           rows = cursor.fetchall()
-          # Cierra la conexión
-          connection.close()
+          connection.close() 
           if len(rows)!= 0:
               for row in rows: 
                 return User(row[0], row[1])
@@ -55,4 +52,3 @@ class ModelUser():
               return None
       except Exception as ex:
           raise Exception(ex)
-          #return "No hay conexion a la base de datos"

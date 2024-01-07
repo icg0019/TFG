@@ -1,7 +1,6 @@
 import pandas as pd
 import math
 
-
 class Necesidades:
     def __init__(self, df):
         self.productos = self.crear_conjunto_productos(df)

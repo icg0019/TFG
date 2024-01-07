@@ -7,7 +7,6 @@ class User(UserMixin):
         self.id=usuario
         self.usuario = usuario
         self.password = password #generate_password_hash(password)
-    
     def set_password(self, password):
         self.password = generate_password_hash(password)
 

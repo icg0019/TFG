@@ -1,6 +1,4 @@
 import pandas as pd
-from decimal import Decimal
-import numpy as np
 from datetime import datetime
 import os
 
@@ -21,7 +19,7 @@ except ImportError:
 
 
 #Funcion datos de inicio
-def ConjuntoPedido(csv): 
+def ConjuntoPedido(csv):
   carpeta_actual = os.path.dirname(os.path.abspath(__file__))
   ruta = os.path.join(carpeta_actual, 'Necesidades_origenes', csv)
   df_productos=ConexionCSV(ruta).obtener_datos()
@@ -49,13 +47,13 @@ def penalizacion_por_brik(pedidos):
   
   
 #Funcion que calcula los pedidos de la forma más optima posible
-def optimizacion(df, tipobrik): 
+def optimizacion(df, tipobrik):
   nombre_carpeta=f"{tipobrik}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
   grupo_pedidos= []
   productos=Necesidades(df) #creamos las necesidades
  
   insatisfecho = productos.es_satisfecho()
-  while insatisfecho==False:
+  while not insatisfecho:
     #calculamos los productos compatibles del productos elegido. En este caso siempre eligmos el primero
     productos_compatibles_df = productos.calcular_prod_compatibles(0)
     productos_compatibles=len(productos_compatibles_df)  #comprobamos cuantos productos compatibles hay
@@ -63,7 +61,7 @@ def optimizacion(df, tipobrik):
     # Extraer la columna 'Tramos' usando los índices de interés
     tramos_df=productos.extraer_tramos_compatibles(productos_compatibles_df)
 
-    #calculamos los productos compatibles no satisfechos 
+    #calculamos los productos compatibles no satisfechos
     tramos_minimos_no_satisfecho = productos.extraer_tramos_no_satisfechos(tramos_df)
     productos_compatibles_no_satisfechos=len(tramos_minimos_no_satisfecho)
 
@@ -74,12 +72,12 @@ def optimizacion(df, tipobrik):
     pedido.explicar_inicio()
     
     #Si tiene menos productos compatibles que 5 
-    if(productos_compatibles<5):
+    if (productos_compatibles < 5):
       no_satisfechos=productos_compatibles_no_satisfechos
       inicio=0
-    else: 
-      #si los productos no satisfechos son menores que 5, intentamos cubrir las pistas con los productos no satisfechos
-      if(productos_compatibles_no_satisfechos<5):       
+    else:
+        #si los productos no satisfechos son menores que 5, intentamos cubrir las pistas con los productos no satisfechos
+      if (productos_compatibles_no_satisfechos<5):       
         #Inicializamos pedido
         no_satisfechos=productos_compatibles_no_satisfechos
         inicio=productos_compatibles_no_satisfechos
@@ -88,21 +86,21 @@ def optimizacion(df, tipobrik):
         no_satisfechos=5
         inicio=5
         
-    pedido.crearPedido(no_satisfechos,inicio) #creamos el pedido 
+    pedido.crearPedido(no_satisfechos,inicio) #creamos el pedido
     pedido.mejorarHastaOptima() #mejoramos el pedido todo lo que podamos
     grupo_pedidos.append(pedido) #Actualizamos el pedido y lo añadimos al conjutno de pedidos
     
     #Actualizamos los tramos de los productos y añadimos penalizaciones en pedido si supera tramos maximos
     for i in pedido.devolver_pedido(): 
-      if productos.get_tramos_minimos(i)-pedido.devolver_tramos()<0: 
+      if productos.get_tramos_minimos(i)-pedido.devolver_tramos()<0:
         productos.set_tramos_minimos(i,0)
       else: 
         productos.set_tramos_minimos(i,productos.get_tramos_minimos(i)-pedido.devolver_tramos())
         
-      if productos.get_tramos_maximos(i)-pedido.devolver_tramos()<0: 
+      if productos.get_tramos_maximos(i)-pedido.devolver_tramos()<0:
         productos.set_tramos_maximos(i,0)
         pedido.supera_tramos_maximos(i,productos.get_tramos_maximos(i)-pedido.devolver_tramos())
-      else: 
+      else:
         productos.set_tramos_maximos(i,productos.get_tramos_maximos(i)-pedido.devolver_tramos())
     
     productos.actualizarSatifecho()  #Actualizamos Satisfecho
@@ -110,7 +108,7 @@ def optimizacion(df, tipobrik):
     
     insatisfecho = productos.es_satisfecho()
 
-  #registro.registrar(f"Se han satisfecho todas las necesidades minimas de los productos")
-  #exportar_a_csv(grupo_pedidos) #exportamos los pedidos
+    #registro.registrar(f"Se han satisfecho todas las necesidades minimas de los productos")
+    #exportar_a_csv(grupo_pedidos) #exportamos los pedidos
   return grupo_pedidos
   

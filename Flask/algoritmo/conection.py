@@ -25,7 +25,8 @@ def crearconexion(nombre_tabla):
                           ';DATABASE=' + database + ';Authentication=' + auth +
                           ';UID=' + username + ';PWD=' + password + ';ENCRYPT=yes')
     cursor = cnxn.cursor()
-    cursor.execute("SELECT * FROM " + table)
+    #cursor.execute("SELECT * FROM " + table)
+    cursor.execute("SELECT * FROM ?", (table,))
     row = cursor.fetchone()
 
     # Crear dataframe y rellenarlo. 
@@ -41,7 +42,7 @@ def crearconexion(nombre_tabla):
     try: 
       # Cerrar conexión
       cnxn.close()
-    except: 
+    except:
       pass
   #df.to_csv('500.csv', index=False)
   return df
@@ -58,7 +59,8 @@ def crearconexionPedidos(nombre_tabla):
                           ';DATABASE=' + database + ';Authentication=' + auth +
                           ';UID=' + username + ';PWD=' + password + ';ENCRYPT=yes')
     cursor = cnxn.cursor()
-    cursor.execute("SELECT * FROM " + table)
+    #cursor.execute("SELECT * FROM " + table)
+    cursor.execute("SELECT * FROM ?", (table,))
     row = cursor.fetchone()
 
     # Crear dataframe y rellenarlo. 

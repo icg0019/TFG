@@ -1,5 +1,5 @@
-/* Establecer dimensiones máximas del div. Se usa para mostrar las necesidades de los briks*/
-.tabla-container_necesidades {
+/* Establecer dimensiones máximas del div. Se usa para mostrar las necesidades de los briks */
+.tabla-container-necesidades {
   max-height: 300px; /* Ajusta según sea necesario */
   overflow: auto; /* Mostrar barra de desplazamiento si el contenido es demasiado grande */
   border: 1px solid #ddd; /* Añadir borde para claridad visual */
@@ -27,16 +27,15 @@ img {
 }
 
 .content-container {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.1);
 }
 
-/*Clase de la cabecera de la base */
+/* Clase de la cabecera de la base */
 .header {
-  /*background-color: rgba(0, 128, 0, 0.7); Fondo semitransparente verde */
-  background-color: rgba(0, 128, 0, 0.7);
+  background-color: hsla(120, 100%, 25%, 0.7);
   padding: 15px;
   display: flex;
   align-items: center;
@@ -48,7 +47,7 @@ img {
 }
 
 /* Barra de navegacion de la base */
-.barra_navegacion {
+.barra-navegacion {
   display: flex;
   justify-content: center; /* Centrar elementos horizontalmente */
   align-items: center; /* Alinear elementos verticalmente */
@@ -73,7 +72,7 @@ body {
 }
 
 /* Barra de navegacion de la base */
-.barra_navegacion ul {
+.barra-navegacion ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -81,13 +80,13 @@ body {
 }
 
 /* Barra de navegacion de la base */
-.barra_navegacion li {
+.barra-navegacion li {
   margin-right: 20px;
   border-bottom: 2px solid transparent; /* Línea inferior transparente */
 }
 
 /* Barra de navegacion de la base */
-.barra_navegacion li a {
+.barra-navegacion li a {
   display: block;
   padding: 10px;
   color: #fff;
@@ -96,7 +95,7 @@ body {
 }
 
 /* Cambiar color de fondo en hover */
-.barra_navegacion li a:hover {
+.barra-navegacion li a:hover {
   background-color: #333; /* Color de fondo en hover */
   border-bottom: 2px solid #fff; /* Línea inferior blanca en hover */
 }
@@ -105,7 +104,7 @@ body {
   padding: 20px;
 }
 
-/* Estilo adicional para la tabla*/
+/* Estilo adicional para la tabla */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -118,18 +117,12 @@ td {
   text-align: left;
 }
 
-.h1_titulo {
-  font-size: 2.5em;
-  color: #337ab7;
-  margin-bottom: 20px;
-}
-
 .custom-bg {
-  background-color: rgba(1, 191, 1, 0.3); /* Fondo verde con opacidad */
-  color: #000000; /* Cambia el color del texto a negro, si es necesario */
+  background-color: hsla(120, 99%, 38%, 0.3); /* Fondo verde con opacidad */
+  color: #000; /* Cambia el color del texto a negro, si es necesario */
   border-radius: 10px; /* Bordes redondeados */
   padding: 20px; /* Ajusta el relleno */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 10%); /* Sombra ligera */
   transition: background-color 0.3s ease; /* Transición suave al cambiar el color de fondo */
 }
 
@@ -145,24 +138,24 @@ td {
   border: none;
   border-radius: 0;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 20%);
   transition: 0.3s;
   margin-bottom: 15px;
 }
 
 .boton-inicio:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px hsla(0, 0%, 0%, 0.2);
 }
 
 .titulo-paginas2 {
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 30px;
   font-style: bold;
   font-weight: bold;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.1);
 }
-/* En tu hoja de estilo CSS o en el bloque de estilo en tu HTML */
+
 .titulo-paginas {
   /* Alineación al centro */
   text-align: center;
@@ -174,7 +167,7 @@ td {
   font-family: 'Arial', sans-serif;
 
   /* Color del texto */
-  color: #000000;
+  color: #000;
 
   /* Fondo del texto */
   background-color: #e8f5e9;
@@ -186,7 +179,7 @@ td {
   padding: 15px;
 
   /* Sombra del texto */
-  box-shadow: 5px 5px 10px #888888;
+  box-shadow: 5px 5px 10px #888;
 
   /* Transición para suavizar cambios */
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
@@ -201,7 +194,7 @@ td {
   position: absolute;
   background-color: black;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px 0px rgba(0, 0, 0, 20%);
   z-index: 1;
 }
 
