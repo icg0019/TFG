@@ -74,7 +74,7 @@ class Pedido:
         if (len(self.pedido)!=5):
             self.anadir_productos_repetidos(no_satisfechos) #añadimos productos repetidos que tengan necesidades mínimas
             self.registro.registrar(f"Pedido productos repetidos {self.pedido}")
-            if (len(self.pedido)!=5): 
+            if (len(self.pedido)!=5):
                 self.anadir_prod_no_necesarios(inicio) #añadimos productos que los tramos mínimos están superados
                 self.registro.registrar(f"Pedido superando tramos minimos: {self.pedido}")
         
@@ -106,12 +106,12 @@ class Pedido:
         tramos_df_temporal=self.tramos_df.copy()
         primer_elemento=self.pedido[0] #nos quedamos con el primer elemento
         #buscamos el elemento/elementos cuyo valor de tramos maximos sea tramos
-     
+
         productos_a_cambiar1=self.tramos_df[self.tramos_df['Tramos_maximos']<(self.tramos+1)*self.tramos_df['Apariciones']] #se hace una lista con los productos que están impidiendo hacer el cambio.
         productos_a_cambiar=productos_a_cambiar1.index.tolist()
         #Nos quedamos solo con los que estén en el pedido
         productos_a_cambiar = list(set(self.pedido) & set(productos_a_cambiar))
-       
+
         self.registro.registrar(f"Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene {productos_a_cambiar} productos que bloquean el aumento de tramos.")
     
         #Por cada posible cambio, vemos por que elemento podemos cambiar. si se puede cambiar, se hace el cambio
@@ -123,7 +123,6 @@ class Pedido:
                 tramos_maximos=self.productos.get_tramos_maximos(indice)
                 if ( indice not in productos_a_cambiar and float(tramos_maximos)>=(self.tramos+1)*(float(tramos_df_temporal.loc[indice, "Apariciones"])+1)):
 
-                    
                     tramos_df_temporal.loc[i, "Apariciones"]-=1
                     indice_pedido=pedido_temporal.index(i)
                     pedido_temporal[indice_pedido]=indice
@@ -145,14 +144,14 @@ class Pedido:
         self.registro.registrar(f"No he conseguido cambiar todos los productos que bloqueaban el aumento de tramos{productos_a_cambiar}")
 
         return self.pedido, self.tramos_df
-    
+
     #Funcion para mejorar el pedido en pedido que tiene mas de 5 compatibilidades
     def mejorarpedido(self):
         #Si el maximo del primer elemento es igual a tramos, los tramos minimos no se pueden mejorar.
         tramos_maximos_0=self.productos.get_tramos_maximos(self.pedido[0])
         if (float(tramos_maximos_0)<=self.tramos):
             self.registro.registrar("El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.")
-    
+
         #si no, intentamos quitar el elemento del pedido que nos esta bloqueando y sustituirlo por otro con un numero de tramos máximos mayor.
         else:
             lista_pedido_tramos_df=self.mejorarPedido_tramos()
@@ -166,7 +165,7 @@ class Pedido:
                 
                 self.aumentarTramos(self.tramos_df) #intento aumentar tramos
                 #breakpoint()
-      
+
         self.pedido.append(self.tramos)
 
         return self.pedido, self.tramos_df
@@ -186,37 +185,36 @@ class Pedido:
                 pedido_original=self.pedido.copy()
                 self.tramos=self.pedido[-1]
                 self.pedido.pop(-1)
-      
+
         self.registro.registrar(f"PEDIDO OPTIMO {self.pedido} y los tramos {self.tramos}")
-        
-        
-    #Funcion que devuelve los tramos
+
+    #Funcion que devuelve los tramos en cantidad
     def devolver_cantidad(self):
         return self.tramos*17200
-    
-    #Funcion que devuelve los tramos 
+
+    #Funcion que devuelve los tramos
     def devolver_tramos(self):
         return self.tramos
-    
+
     #Funcion que devuelve el pedido
     def devolver_pedido(self):
         return self.pedido
-    
+
     #Funcion que devuelve el pedido con su material
     def devolver_pedido_por_matnr(self):
         matnr=[]
         for producto in self.pedido:
             matnr.append(self.productos.get_matnr(producto))
         return matnr
-    
+
     #Funcion para devolver un producto de la posicion p
     def devolver_producto_de_pedido(self, posicion):
         return self.pedido[posicion]
-    
+
     #Funcion que imprime el pedido
     def imprimir_pedido(self):
         self.registro.registrar(f"Pedido {self.pedido} con tramos {self.tramos}")
-    
+
     #Funcion que calcula la penalizacion del pedido
     def calcular_penalizacion(self):
         if (self.tramos<5):

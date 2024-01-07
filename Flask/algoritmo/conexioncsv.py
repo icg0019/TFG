@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 
 class ConexionCSV:
     def __init__(self, ruta):

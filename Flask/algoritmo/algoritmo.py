@@ -44,14 +44,14 @@ def penalizacion_por_brik(pedidos):
     penalizacion+=pedido.calcular_penalizacion()
     briks+=pedido.devolver_cantidad()
   return penalizacion/briks
-  
-  
+
+
 #Funcion que calcula los pedidos de la forma más optima posible
 def optimizacion(df, tipobrik):
   nombre_carpeta=f"{tipobrik}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
   grupo_pedidos= []
   productos=Necesidades(df) #creamos las necesidades
- 
+
   insatisfecho = productos.es_satisfecho()
   while not insatisfecho:
     #calculamos los productos compatibles del productos elegido. En este caso siempre eligmos el primero

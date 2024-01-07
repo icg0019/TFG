@@ -30,12 +30,12 @@ img {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 10%);
+  box-shadow: 0 4px 8px hsla(0deg, 0%, 0%, 10%);
 }
 
 /* Clase de la cabecera de la base */
 .header {
-  background-color: hsla(120, 100%, 25%, 70%);
+  background-color: hsla(120deg, 100%, 25%, 70%);
   padding: 15px;
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@ td {
 }
 
 .custom-bg {
-  background-color: hsla(120, 99%, 38%, 30%); /* Fondo verde con opacidad */
+  background-color: hsla(120deg, 99%, 38%, 30%); /* Fondo verde con opacidad */
   color: #000; /* Cambia el color del texto a negro, si es necesario */
   border-radius: 10px; /* Bordes redondeados */
   padding: 20px; /* Ajusta el relleno */

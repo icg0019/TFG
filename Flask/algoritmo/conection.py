@@ -16,10 +16,10 @@ def obtener_contraseña():
 
 def crearconexion(nombre_tabla):
   table=nombre_tabla
-#Crear dataframe
+    #Crear dataframe
   df = pd.DataFrame(columns=["MATNR", "REFERENCIA", "C1", "C2", "Necesidades_min", "Necesidades_max"])
   try:
-    # Crear conexión 
+    # Crear conexión
     password = obtener_contraseña()
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server +
                           ';DATABASE=' + database + ';Authentication=' + auth +
@@ -38,7 +38,7 @@ def crearconexion(nombre_tabla):
   except pyodbc.Error as e:
     print("Error de conexión:", e)
     return None
-  finally: 
+  finally:
     try:
       cnxn.close()
     except:
@@ -69,9 +69,9 @@ def crearconexionPedidos(nombre_tabla):
         df = pd.concat([df, pd.DataFrame(nueva_fila1, index=[0])], ignore_index=True)
         row = cursor.fetchone()
   except pyodbc.Error as e:
-        print("Error de conexión:", e)
-        return None
-  finally: 
+    print("Error de conexión:", e)
+    return None
+  finally:
     try: 
       cnxn.close()
     except:
