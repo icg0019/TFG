@@ -9,7 +9,7 @@ try:
     from necesidades import Necesidades
     from conexioncsv import ConexionCSV
     from pedido import Pedido
-    from conection2 import crearconexion
+    from conection import crearconexion
     from registro_algoritmo import Registro
 except ImportError:
     # Si falla la importación, intentar importar desde la ruta del módulo
@@ -17,10 +17,8 @@ except ImportError:
     from .necesidades import Necesidades
     from .conexioncsv import ConexionCSV
     from .pedido import Pedido
-    from .conection2 import crearconexion
+    from .conection import crearconexion
 
-
-#Version 11 - Se añade un registro para el algoritmo
 
 #Funcion datos de inicio
 def ConjuntoPedido(csv): 
@@ -55,8 +53,7 @@ def optimizacion(df, tipobrik):
   nombre_carpeta=f"{tipobrik}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
   grupo_pedidos= []
   productos=Necesidades(df) #creamos las necesidades
-  #df=conection2.crearconexion()
-  
+ 
   insatisfecho = productos.es_satisfecho()
   while insatisfecho==False:
     #calculamos los productos compatibles del productos elegido. En este caso siempre eligmos el primero
@@ -117,14 +114,3 @@ def optimizacion(df, tipobrik):
   #exportar_a_csv(grupo_pedidos) #exportamos los pedidos
   return grupo_pedidos
   
-#Funcion inicial
-if __name__ == "__main__":
-  #Datos de entrada con los que trabajar. 
-  #df=conection2.crearconexion()
-  df=ConjuntoPedido('500.csv')
-  grupo_pedidos=optimizacion(df) #calculos los pedidos
-  print(grupo_pedidos)
-  for pedido in grupo_pedidos: 
-    print(pedido.imprimir_pedido())
-  #exportar_a_csv(grupo_pedidos) #exportamos los pedidos
- 

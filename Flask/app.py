@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, request,send_file,redirect, flash
-from flask_wtf.csrf import CSRFProtect
+from flask import Flask, render_template, url_for, request,send_file,redirect,current_app, flash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, logout_user, current_user
 from algoritmo.conexioncsv import ConexionCSV
 from algoritmo.registro_algoritmo import Registro
@@ -16,7 +15,6 @@ import logging
 from datetime import datetime
 
 app=Flask(__name__)
-#csrf=CSRFProtect()
 login_manager_app = LoginManager(app)
 app.secret_key='LDfj/8adf'
 
@@ -45,10 +43,9 @@ def login ():
     if(logged_user != None): 
       if(logged_user!=False): 
         try: 
-          login_user(logged_user) 
+          login_user(logged_user)
         except Exception as e:
           logging.error(f"Error: {e}") 
-          
         return redirect(url_for('inicio')) 
       else: 
         error = 'Contraseña incorrecta. Inténtalo de nuevo.'
@@ -75,6 +72,8 @@ def inicio():
 @login_required
 def briks_edge(): 
   df=obtener_Datos('edge.csv')
+  #df=conection.crearconexion('Necesidades_briks_EDGE')
+  
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
 
   return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="EDGE")
@@ -84,6 +83,7 @@ def briks_edge():
 @login_required
 def brik_500(): 
   df=obtener_Datos('500.csv')
+  #df=conection.crearconexion('Necesidades_briks_500')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))]#para mostrar, quitamos las que no tienen ningun tipo de necesidad
   return render_template('briks.html', df=df, df_mostrar=df_mostrar,tipobrik="500")
 
@@ -91,6 +91,7 @@ def brik_500():
 @login_required
 def briks_slim(): 
   df=obtener_Datos('slim.csv')
+  #df=conection.crearconexion('Necesidades_briks_SLIM')
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
   
   return render_template('briks.html', df=df, df_mostrar=df_mostrar, tipobrik="SLIM")
@@ -135,18 +136,14 @@ def exportar_csv():
   timestamp = ahora.strftime('%Y%m%d_%H%M%S') 
   nombre_archivo = f'pedidos{timestamp}.csv' 
   # Devuelvo el archivo CSV de descarga
-  return send_file(
-      csv_buffer,
-      mimetype='text/csv',
-      as_attachment=True,
-      download_name=nombre_archivo
-    )
+  return send_file(csv_buffer, mimetype='text/csv', as_attachment=True, download_name=nombre_archivo)
   
   
 @app.route("/Historico_pedidos")
 @login_required
 def historico_pedidos(): 
   df=obtener_Datos('Historico_Pedidos.csv')
+  #df=conection.crearconexion('PEDIDOS_BRIKS')
   #Hago un maestro de Pedidos para mostrar los pedidos
   df_pedidos_unicos = df.drop_duplicates(subset=["Pedido"])[["Pedido", "Fecha"]].set_index('Pedido')
   return render_template('historico_pedidos.html', df=df, df_pedidos_unicos=df_pedidos_unicos)
@@ -177,12 +174,7 @@ def exportar_csv_historico():
         timestamp = ahora.strftime('%Y%m%d_%H%M%S') 
         nombre_archivo = f'pedidos_sap{timestamp}.csv' 
         # Devuelvo el archivo CSV a descargar
-        return send_file(
-            csv_buffer,
-            mimetype='text/csv',
-            as_attachment=True,
-            download_name=nombre_archivo
-          )
+        return send_file(csv_buffer, mimetype='text/csv', as_attachment=True, download_name=nombre_archivo)
   except BadRequestKeyError as e:
         print(f'Error: {e}')
         return 'Error en la solicitud', 400  # Retorna un código de estado HTTP 400 Bad Request
@@ -194,6 +186,11 @@ def exportar_csv_historico():
 def acerca_de(): 
   return render_template('acerca_de.html')
 
+#Pagina para descargar el manual de usuario 
+@app.route('/descargar_manual')
+def descargar_manual():
+    pdf_path = 'static/archivos/Manualdeusuario.pdf'
+    return send_file(pdf_path, as_attachment=True, download_name="Manual de usuario.pdf")
 
 #Funcion para controlar que no esta logueado
 @app.errorhandler(401)
@@ -208,7 +205,6 @@ def status_404(error):
 
 if __name__ == "__main__": 
   app.config.from_object(config['development'])
-  #csrf.init_app(app) #todavia no está funcionando, lo dejo comentado
   app.register_error_handler(401, status_401)
   app.register_error_handler(404, status_404)
   

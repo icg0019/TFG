@@ -28,7 +28,12 @@
           <li><a href="/Historico_pedidos">Pedidos SAP</a></li>
           <li><a href="/Acerca_de">Ayuda</a></li>
           {% if current_user.is_authenticated %}
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropbtn">{{ current_user.usuario }} &#9662;</a>
+            <div class="dropdown-content">
+              <a href="{{ url_for('logout') }}">Cerrar sesión</a>
+            </div>
+          </li>
           {% endif %}
         </ul>
       </nav>
