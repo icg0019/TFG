@@ -25,7 +25,7 @@ class ModelUser():
         if len(rows)!=0:
           for row in rows:
             coincide_password=User.check_password(row[1], user.password)
-            if (coincide_password): 
+            if (coincide_password):
               user=User(row[0],row[1])
               return user
             else:
@@ -44,9 +44,9 @@ class ModelUser():
           cursor = connection.cursor()
           cursor.execute("SELECT * FROM Users_Flask WHERE Usuario = ?", user)
           rows = cursor.fetchall()
-          connection.close() 
+          connection.close()
           if len(rows)!= 0:
-              for row in rows: 
+              for row in rows:
                 return User(row[0], row[1])
           else:
               return None

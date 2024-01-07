@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request,send_file,redirect, flash
+from flask import Flask, render_template, url_for, request,send_file,redirect
 from flask_login import LoginManager, login_user, logout_user, login_required
 from algoritmo.conexioncsv import ConexionCSV
 from algoritmo.algoritmo import optimizacion, penalizacion_por_brik, pedidos_a_exportar
@@ -34,13 +34,13 @@ def index():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login ():
-#si ya han enviado los datos de login
-  if(request.method=='POST'):
+    #si ya han enviado los datos de login
+  if (request.method=='POST'):
     user=User(request.form['username'], request.form['password']) #hacemos un usuario con el usuario y contraseña
     logged_user=ModelUser.login(user) #pasamos el usuari opara hacer las comprobacion de si está o no en la bd
 
-    if(logged_user is not None):
-      if(logged_user is not False):
+    if (logged_user is not None):
+      if (logged_user is not False):
         try:
           login_user(logged_user)
         except Exception as e:
@@ -49,7 +49,7 @@ def login ():
       else:
         error = 'Contraseña incorrecta. Inténtalo de nuevo.'
       return render_template('auth/login.html', error = error)
-    else: 
+    else:
       error = 'Usuario no encontrado. Inténtalo de nuevo.'
       return render_template('auth/login.html',error = error)
   else: 
@@ -65,13 +65,12 @@ def logout():
 @login_required
 def inicio():
   return render_template('inicio.html')
-  
 
 @app.route("/Briks_edge")
 @login_required
 def briks_edge():
   df=obtener_Datos('edge.csv')
-#df=conection.crearconexion('Necesidades_briks_EDGE')
+    #df=conection.crearconexion('Necesidades_briks_EDGE')
   
   df_mostrar = df.loc[~((df['Necesidades_max'] == 0) & (df['Necesidades_min'] == 0))] #para mostrar, quitamos las que no tienen ningun tipo de necesidad
 
@@ -98,7 +97,7 @@ def briks_slim():
 @app.route('/generar_pedidos', methods=['GET','POST'])
 @login_required
 def generar_pedidos():
-#Si ponen la url directamente por el navegador
+    #Si ponen la url directamente por el navegador
   if request.method == 'GET':
     return redirect(url_for('inicio'))
   df_json = request.form.get('df')# Recibo el DataFrame desde el formulario
@@ -111,7 +110,8 @@ def generar_pedidos():
   pedidos_por_cantidades=[]
   for pedido in pedidos:
     pedidos_por_cantidades.append(pedido.cantidad_por_producto())
-  pedidos_por_cantidades = sorted(pedidos_por_cantidades, key=lambda x: len(x), reverse=True) #les ordeno para que mejore la visualizacoin
+  pedidos_por_cantidades = sorted(pedidos_por_cantidades, key=len, reverse=True)#les ordeno para que mejore la visualizacoin
+
   df_csv=pedidos_a_exportar(pedidos) #genero el df listo para exportarlo
   return render_template('generar_pedidos.html', pedidos_por_cantidades=pedidos_por_cantidades, penalizacion=penalizacion, df_csv=df_csv)
   
@@ -119,7 +119,7 @@ def generar_pedidos():
 @app.route('/exportar_csv', methods=['GET', 'POST'])
 @login_required
 def exportar_csv():
-#si el usuario pone directamente la url en el navegador
+    #si el usuario pone directamente la url en el navegador
   if request.method == 'GET':
     return redirect(url_for('inicio'))
   
@@ -151,7 +151,7 @@ def historico_pedidos():
 @app.route('/exportar_csv_historico', methods=['GET', 'POST'])
 @login_required
 def exportar_csv_historico():
-#Si recibo la url directamente por el navegador
+    #Si recibo la url directamente por el navegador
   if request.method == 'GET':
     return redirect(url_for('inicio'))
   try:
@@ -166,11 +166,11 @@ def exportar_csv_historico():
     
     # Convierte el DataFrame a un archivo CSV en memoria (modo binario)
     csv_buffer = BytesIO()
-    df.to_csv(csv_buffer, index=False, encoding='utf-8') 
+    df.to_csv(csv_buffer, index=False, encoding='utf-8')
     csv_buffer.seek(0)
     
     ahora=datetime.now()
-    timestamp = ahora.strftime('%Y%m%d_%H%M%S') 
+    timestamp = ahora.strftime('%Y%m%d_%H%M%S')
     nombre_archivo = f'pedidos_sap{timestamp}.csv'
     # Devuelvo el archivo CSV a descargar
     return send_file(csv_buffer, mimetype='text/csv', as_attachment=True, download_name=nombre_archivo)
@@ -198,11 +198,11 @@ def status_401(error):
     
 #Funcion para controlar cuando intentan entrar a una url que no existe
 @app.errorhandler(404)
-def status_404(error): 
+def status_404(error):
   return render_template('error404.html')
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
   app.config.from_object(config['development'])
   app.register_error_handler(401, status_401)
   app.register_error_handler(404, status_404)

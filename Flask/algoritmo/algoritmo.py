@@ -32,15 +32,15 @@ def pedidos_a_exportar(pedidos):
       fila = pedido.devolver_pedido_por_matnr()
       fila.append(pedido.devolver_cantidad())
       filas.append(fila)
-        
+
   df_csv = pd.DataFrame(filas, columns=['Producto 1', 'Producto 2', 'Producto 3', 'Producto 4', 'Producto 5','Cantidad'])
   return df_csv
 
 #Funcion que calcula la penalizacion por brik
-def penalizacion_por_brik(pedidos): 
+def penalizacion_por_brik(pedidos):
   briks=0
   penalizacion=0
-  for pedido in pedidos: 
+  for pedido in pedidos:
     penalizacion+=pedido.calcular_penalizacion()
     briks+=pedido.devolver_cantidad()
   return penalizacion/briks
@@ -71,18 +71,18 @@ def optimizacion(df, tipobrik):
     pedido=Pedido(productos, tramos_df, registro)
     pedido.explicar_inicio()
     
-    #Si tiene menos productos compatibles que 5 
+    #Si tiene menos productos compatibles que 5
     if (productos_compatibles < 5):
       no_satisfechos=productos_compatibles_no_satisfechos
       inicio=0
     else:
         #si los productos no satisfechos son menores que 5, intentamos cubrir las pistas con los productos no satisfechos
-      if (productos_compatibles_no_satisfechos<5):       
+      if (productos_compatibles_no_satisfechos<5):
         #Inicializamos pedido
         no_satisfechos=productos_compatibles_no_satisfechos
         inicio=productos_compatibles_no_satisfechos
         
-      else: 
+      else:
         no_satisfechos=5
         inicio=5
         
@@ -91,10 +91,10 @@ def optimizacion(df, tipobrik):
     grupo_pedidos.append(pedido) #Actualizamos el pedido y lo añadimos al conjutno de pedidos
     
     #Actualizamos los tramos de los productos y añadimos penalizaciones en pedido si supera tramos maximos
-    for i in pedido.devolver_pedido(): 
+    for i in pedido.devolver_pedido():
       if productos.get_tramos_minimos(i)-pedido.devolver_tramos()<0:
         productos.set_tramos_minimos(i,0)
-      else: 
+      else:
         productos.set_tramos_minimos(i,productos.get_tramos_minimos(i)-pedido.devolver_tramos())
         
       if productos.get_tramos_maximos(i)-pedido.devolver_tramos()<0:

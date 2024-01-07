@@ -20,16 +20,16 @@ class Pedido:
         self.tramos_df.loc[producto, "Apariciones"] =  1 #actualizamos las apariciones de ese producto
         self.tramos_df["Apariciones"] = self.tramos_df["Apariciones"].fillna(0)
         num_productos=1
-        
+
         #calculamos el df de los productos compatibles y lo ordenamos
         df_tramos_compatibles=pd.DataFrame(self.tramos_df.loc[self.tramos_df['Tramos_minimos'] != 0, ['Tramos_minimos', 'Tramos_maximos']])
         df_tramos_compatibles=df_tramos_compatibles.sort_values(by=['Tramos_minimos', "Tramos_maximos"], ascending=[True, True])
-        self.registro.registrar(f"Estas son las necesidades compatibles con el primer producto ordenadas por prioridad")
+        self.registro.registrar("Estas son las necesidades compatibles con el primer producto ordenadas por prioridad")
         self.registro.registrar(f"{self.tramos_df}")
        
         
         #ponemos los productos que se puedan
-        for indice, fila in df_tramos_compatibles.iterrows():
+        for indice in df_tramos_compatibles.iterrows():
             if (producto!=indice):
                 self.pedido.append(indice)
                 self.tramos_df.loc[indice, "Apariciones"] =  1
@@ -46,7 +46,7 @@ class Pedido:
             posible=0
             revision=0
             #Damos una vuelta por los productos a revisar y si se puede añadir se añade.
-            while len(self.pedido)<5 and posible<productos_a_revisar: 
+            while len(self.pedido)<5 and posible<productos_a_revisar:
 
                 if (self.tramos_df['Apariciones'].loc[self.pedido[posible]]+1)*self.tramos<=float(self.tramos_df['Tramos_maximos'].loc[self.pedido[posible]]):
                     self.pedido.append(self.pedido[posible])
@@ -57,8 +57,8 @@ class Pedido:
     #Funcion para añadir los productos compatibles cuyos tramos mínimos están cubiertos
     def anadir_prod_no_necesarios(self, producto_a_empezar):
         posible=producto_a_empezar
-        
-        while(len(self.pedido)<self.pistas):
+
+        while (len(self.pedido)<self.pistas):
             self.pedido.append(self.tramos_df.index[int(posible)]) #coge el indice
             self.tramos_df.loc[self.tramos_df.index[int(posible)], "Apariciones"]+=1 #Hacer ejemplos
             posible+=1
@@ -70,7 +70,7 @@ class Pedido:
     def crearPedido(self, no_satisfechos,inicio):
         self.iniciar_pedido(no_satisfechos) #iniciamos el pedido
         self.registro.registrar(f"Pedido Inicial {self.pedido}")
-        
+
         if (len(self.pedido)!=5):
             self.anadir_productos_repetidos(no_satisfechos) #añadimos productos repetidos que tengan necesidades mínimas
             self.registro.registrar(f"Pedido productos repetidos {self.pedido}")
@@ -95,7 +95,7 @@ class Pedido:
             if aumentar_tramo == False:
                 self.registro.registrar(f"Intento aumentar tramos a {self.tramos} pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con {self.tramos-1} tramos.")
                 break
-            else: 
+            else:
                 self.registro.registrar(f"Intento aumentar tramos a {self.tramos} y lo consigo.")
         self.tramos-=1
 
@@ -117,7 +117,7 @@ class Pedido:
         #Por cada posible cambio, vemos por que elemento podemos cambiar. si se puede cambiar, se hace el cambio
         cambios=0
         for i in productos_a_cambiar:
-            for indice, fila in tramos_df_temporal.iterrows():
+            for indice in tramos_df_temporal.iterrows():
                 self.registro.registrar(f"Producto {i} se intenta sustituir por producto {indice}")
                 
                 tramos_maximos=self.productos.get_tramos_maximos(indice)
@@ -137,7 +137,6 @@ class Pedido:
         if cambios==len(productos_a_cambiar):
             self.registro.registrar(f"He conseguido cambiar estos productos {productos_a_cambiar} que bloqueaban el aumento de tramos. El nuevo pedido es {pedido_temporal} y las apariciones modificadas son:")
             self.registro.registrar(f"{tramos_df_temporal}")
-            
 
             #Comprobamos que el primer elemento sea el mismo que antes, si no es asi, se mueve al primer lugar para seguirle teniendo de referencia, ya que es el que queremos completar.
             if (primer_elemento!=pedido_temporal[0]):
@@ -148,11 +147,11 @@ class Pedido:
         return self.pedido, self.tramos_df
     
     #Funcion para mejorar el pedido en pedido que tiene mas de 5 compatibilidades
-    def mejorarpedido(self): 
+    def mejorarpedido(self):
         #Si el maximo del primer elemento es igual a tramos, los tramos minimos no se pueden mejorar.
         tramos_maximos_0=self.productos.get_tramos_maximos(self.pedido[0])
         if (float(tramos_maximos_0)<=self.tramos):
-            self.registro.registrar(f"El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.")
+            self.registro.registrar("El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.")
     
         #si no, intentamos quitar el elemento del pedido que nos esta bloqueando y sustituirlo por otro con un numero de tramos máximos mayor.
         else:
@@ -173,17 +172,17 @@ class Pedido:
         return self.pedido, self.tramos_df
 
     #Funcion para ir mejorandoPedidos en bucle hasta que no se pueda mas
-    def mejorarHastaOptima(self): 
+    def mejorarHastaOptima(self):
         cambio_pedido=True
         pedido_original=self.pedido.copy()
-        while cambio_pedido is True: 
+        while cambio_pedido is True:
             pedido_tramos_df=self.mejorarpedido() #intentamos mejorar el pedido
             self.pedido=pedido_tramos_df[0]
             self.tramos_df=pedido_tramos_df[1]
             if (self.pedido==pedido_original):
                 self.pedido.pop(-1)
                 cambio_pedido=False
-            else: 
+            else:
                 pedido_original=self.pedido.copy()
                 self.tramos=self.pedido[-1]
                 self.pedido.pop(-1)
@@ -191,7 +190,7 @@ class Pedido:
         self.registro.registrar(f"PEDIDO OPTIMO {self.pedido} y los tramos {self.tramos}")
         
         
-    #Funcion que devuelve los tramos 
+    #Funcion que devuelve los tramos
     def devolver_cantidad(self):
         return self.tramos*17200
     
@@ -214,7 +213,7 @@ class Pedido:
     def devolver_producto_de_pedido(self, posicion):
         return self.pedido[posicion]
     
-    #Funcion que imprime el pedido 
+    #Funcion que imprime el pedido
     def imprimir_pedido(self):
         self.registro.registrar(f"Pedido {self.pedido} con tramos {self.tramos}")
     
@@ -222,20 +221,20 @@ class Pedido:
     def calcular_penalizacion(self):
         if (self.tramos<5):
             return 750
-        else: 
+        else:
             return 0
 
     #Funcion para comprobar que haya un pedido que se haya pasado de los tramos máximos
     def supera_tramos_maximos(self, producto, tramos):
         posicion_elemento = self.pedido.index(producto)
-        self.tramos_superados+=tramos
+        self.tramos_superados[posicion_elemento]+=tramos
 
     #Funcion que calcula las cantidades de cada pedido y devuelve un dicionario con ellas.
     def cantidad_por_producto(self):
         devolver={} #dicionario con clave MATNR : CANTIDAD
         apariciones_df = self.tramos_df[self.tramos_df["Apariciones"] != 0] #calcula los productos que aparecen
         print(apariciones_df)
-        for indice, fila in apariciones_df.iterrows(): 
+        for indice in apariciones_df.iterrows():
             cantidad=apariciones_df.loc[indice, "Apariciones"]*self.tramos*17200
             matnr = self.productos.get_matnr(indice)
             devolver[matnr] =  "{:,.0f}".format(cantidad).replace(",", ".")
@@ -243,9 +242,9 @@ class Pedido:
     
     
     #Funcion para registrar los valores iniciales del pedido
-    def explicar_inicio(self): 
-        self.registro.registrar(f"HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:")
-        self.registro.registrar(f"Productos")
+    def explicar_inicio(self):
+        self.registro.registrar("HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:")
+        self.registro.registrar("Productos")
         self.registro.registrar(f"{ self.productos.get_productos()}")
         self.registro.registrar("Compatibilidades")
         self.registro.registrar(f"{self.productos.get_compatibilidades()}")

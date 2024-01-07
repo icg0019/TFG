@@ -12,7 +12,7 @@ class User(UserMixin):
 
     def get_id(self):
         return str(self.id)
-      
+
     @classmethod
     def check_password(self, hashed_password, password):
         return check_password_hash(hashed_password, password)

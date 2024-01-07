@@ -10,10 +10,10 @@ body {
 }
 
 .main-container {
-  background-color: hsla(138, 33%, 94%, 0.9);
+  background-color: hsla(138deg, 33%, 94%, 90%);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px hsla(0, 0%, 53%, 0.5);
+  box-shadow: 0 0 10px hsla(0deg, 0%, 53%, 50%);
   max-width: 600px; /* Ancho máximo del formulario */
   min-width: 400px;
 }
@@ -74,6 +74,6 @@ body {
   font-size: 30px;
   font-weight: bold;
   color: #2c3e50; /* Color de texto */
-  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.1); /* Sombra del texto */
+  text-shadow: 2px 2px 4px hsla(0deg, 0%, 0%, 10%); /* Sombra del texto */
   margin-bottom: 20px; /* Espaciado inferior */
 }
