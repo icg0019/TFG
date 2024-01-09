@@ -1,0 +1,121 @@
+
+HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:
+
+Productos
+
+        MATNR                                REFERENCIA      C1    C2  Tramos_minimos  Tramos_maximos  Satisfecho  Compatibilidad
+17   76230811         BRIK AVENA NATURAL CONDIS 1L EDGE  P4625C  None               1               3           0             120
+19   76230829   BRIK SOJA CALCIO SPECIAL LINE 1 LT EDGE  P7533C  None               1               1           0             120
+22   76230843  BRIK BBDA.AVENA CARFO.SENSATIONS 1L EDGE  P7731C  None               3               4           0             120
+24   76230845    BRIK SOJA CALCIO CRF SENSATION 1L EDGE  P7731C  None               7              13           0             120
+25   76230846   BRIK SOJA CLASSIC CRF SENSATION 1L EDGE  P7731C  None               3               7           0             120
+..        ...                                       ...     ...   ...             ...             ...         ...             ...
+123  18000444           BRIK AVELLANA VEMONDO PT 1L DGE    None  None               0               1           1             133
+124  18000472   BRIK AVENA S/AZUCAR FAMILY CASH 1L EDGE    None  None               0               0           1             133
+128  18000574         BRIK SOJA CALCIO ALIPENDE 1L EDGE    None  None               0               0           1             133
+129  18000575          BRIK SOJA LIGHT ALIPENDE 1L EDGE    None  None               0               0           1             133
+131  18000578   BRIK ALMENDRA S/AZUCAR ALIPENDE 1L EDGE    None  None               0               1           1             133
+
+[133 rows x 8 columns]
+
+Compatibilidades
+
+     0    1    2    3    4    5    6    7    8    9    10   11   12   ...  120  121  122  123  124  125  126  127  128  129  130  131  132
+0      1    0    0    1    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+1      0    1    1    0    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+2      0    1    1    0    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+3      1    0    0    1    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+4      0    0    0    0    1    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+..   ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...
+128    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+129    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+130    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+131    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+132    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+
+[133 rows x 133 columns]
+
+Vamos a inicializar el pedido con el primer producto 17
+
+Estas son las necesidades compatibles con el primer producto ordenadas por prioridad
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+59               69             128          0.0
+127               0               1          0.0
+131               0               1          0.0
+97                0               1          0.0
+92                0               1          0.0
+..              ...             ...          ...
+32                0               0          0.0
+30                0               0          0.0
+28                0               0          0.0
+26                0               0          0.0
+41                0               0          0.0
+
+[120 rows x 3 columns]
+
+Pedido Inicial [17, 19, 40, 46, 55]
+
+Las apariciones serían las siguientes: 
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+59               69             128          0.0
+127               0               1          0.0
+131               0               1          0.0
+97                0               1          0.0
+92                0               1          0.0
+..              ...             ...          ...
+32                0               0          0.0
+30                0               0          0.0
+28                0               0          0.0
+26                0               0          0.0
+41                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 2 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 1 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [40, 19, 46, 55] productos que bloquean el aumento de tramos.
+
+Producto 40 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 40 por 59
+
+Producto 19 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 19 por 59
+
+Producto 46 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 46 por 59
+
+Producto 55 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 55 por 59
+
+He conseguido cambiar estos productos [40, 19, 46, 55] que bloqueaban el aumento de tramos. El nuevo pedido es [17, 59, 59, 59, 59] y las apariciones modificadas son:
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+59               69             128          4.0
+127               0               1          0.0
+131               0               1          0.0
+97                0               1          0.0
+92                0               1          0.0
+..              ...             ...          ...
+32                0               0          0.0
+30                0               0          0.0
+28                0               0          0.0
+26                0               0          0.0
+41                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 2 y lo consigo.
+
+Intento aumentar tramos a 3 y lo consigo.
+
+Intento aumentar tramos a 4 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 3 tramos.
+
+El primer elemento ya no puede aumentar tramos, por lo que ya tenemos el pedido optimo.
+
+PEDIDO OPTIMO [17, 59, 59, 59, 59] y los tramos 3

@@ -1,0 +1,635 @@
+
+HACEMOS UN PEDIDO, LOS VALORES INICIALES SON LOS SIGUIENTES:
+
+Productos
+
+        MATNR                               REFERENCIA      C1      C2  Tramos_minimos  Tramos_maximos  Satisfecho  Compatibilidad
+80   18000610          BRIK AVENA 0% HACENDADO 1L EDGE  P2009C    None               1               9           0             120
+55   76230181   BRIK BEBIDA ALMENDRA HIPERDINO 1L EDGE  C0018C    None               1               1           0             123
+12   18000498         BRIK SOJA CALCIO VEGEDIA 1L EDGE  P7489C  P0626C               0               0           1              53
+11   18000497           BRIK SOJA ZERO VEGEDIA 1L EDGE  P7423C  P0626C               0               2           1              53
+8    18000412    BRIK ALMENDRA SIN AZUCAR BELC 1L EDGE  P0484C  P0499C               0               0           1              54
+..        ...                                      ...     ...     ...             ...             ...         ...             ...
+123  18000444          BRIK AVELLANA VEMONDO PT 1L DGE    None    None               0               1           1             133
+124  18000472  BRIK AVENA S/AZUCAR FAMILY CASH 1L EDGE    None    None               0               0           1             133
+128  18000574        BRIK SOJA CALCIO ALIPENDE 1L EDGE    None    None               0               0           1             133
+129  18000575         BRIK SOJA LIGHT ALIPENDE 1L EDGE    None    None               0               0           1             133
+131  18000578  BRIK ALMENDRA S/AZUCAR ALIPENDE 1L EDGE    None    None               0               1           1             133
+
+[133 rows x 8 columns]
+
+Compatibilidades
+
+     0    1    2    3    4    5    6    7    8    9    10   11   12   ...  120  121  122  123  124  125  126  127  128  129  130  131  132
+0      1    0    0    1    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+1      0    1    1    0    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+2      0    1    1    0    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+3      1    0    0    1    0    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+4      0    0    0    0    1    0    0    0    0    0    0    0    0  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+..   ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...
+128    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+129    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+130    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+131    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+132    1    1    1    1    1    1    1    1    1    1    1    1    1  ...    1    1    1    1    1    1    1    1    1    1    1    1    1
+
+[133 rows x 133 columns]
+
+Vamos a inicializar el pedido con el primer producto 80
+
+Estas son las necesidades compatibles con el primer producto ordenadas por prioridad
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+80                1               9          1.0
+125               0               1          0.0
+123               0               1          0.0
+105               0               1          0.0
+116               0               1          0.0
+..              ...             ...          ...
+45                0               0          0.0
+74                0               0          0.0
+107               0               0          0.0
+88                0               0          0.0
+29                0               0          0.0
+
+[120 rows x 3 columns]
+
+Pedido Inicial [80, 55]
+
+Pedido productos repetidos [80, 55, 80, 80, 80]
+
+Las apariciones serían las siguientes: 
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+80                1               9          4.0
+125               0               1          0.0
+123               0               1          0.0
+105               0               1          0.0
+116               0               1          0.0
+..              ...             ...          ...
+45                0               0          0.0
+74                0               0          0.0
+107               0               0          0.0
+88                0               0          0.0
+29                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 2 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 1 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [55] productos que bloquean el aumento de tramos.
+
+Producto 55 se intenta sustituir por producto 80
+
+Producto 55 se intenta sustituir por producto 125
+
+Producto 55 se intenta sustituir por producto 123
+
+Producto 55 se intenta sustituir por producto 105
+
+Producto 55 se intenta sustituir por producto 116
+
+Producto 55 se intenta sustituir por producto 115
+
+Producto 55 se intenta sustituir por producto 113
+
+Producto 55 se intenta sustituir por producto 112
+
+Producto 55 se intenta sustituir por producto 111
+
+Producto 55 se intenta sustituir por producto 109
+
+Producto 55 se intenta sustituir por producto 106
+
+He hecho un cambio de producto 55 por 106
+
+He conseguido cambiar estos productos [55] que bloqueaban el aumento de tramos. El nuevo pedido es [80, 106, 80, 80, 80] y las apariciones modificadas son:
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+80                1               9          4.0
+125               0               1          0.0
+123               0               1          0.0
+105               0               1          0.0
+116               0               1          0.0
+..              ...             ...          ...
+45                0               0          0.0
+74                0               0          0.0
+107               0               0          0.0
+88                0               0          0.0
+29                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 2 y lo consigo.
+
+Intento aumentar tramos a 3 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 2 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [80, 106] productos que bloquean el aumento de tramos.
+
+Producto 80 se intenta sustituir por producto 80
+
+Producto 80 se intenta sustituir por producto 125
+
+Producto 80 se intenta sustituir por producto 123
+
+Producto 80 se intenta sustituir por producto 105
+
+Producto 80 se intenta sustituir por producto 116
+
+Producto 80 se intenta sustituir por producto 115
+
+Producto 80 se intenta sustituir por producto 113
+
+Producto 80 se intenta sustituir por producto 112
+
+Producto 80 se intenta sustituir por producto 111
+
+Producto 80 se intenta sustituir por producto 109
+
+Producto 80 se intenta sustituir por producto 106
+
+Producto 80 se intenta sustituir por producto 37
+
+Producto 80 se intenta sustituir por producto 36
+
+Producto 80 se intenta sustituir por producto 34
+
+Producto 80 se intenta sustituir por producto 31
+
+Producto 80 se intenta sustituir por producto 42
+
+Producto 80 se intenta sustituir por producto 16
+
+Producto 80 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 80 por 59
+
+Producto 106 se intenta sustituir por producto 80
+
+Producto 106 se intenta sustituir por producto 125
+
+Producto 106 se intenta sustituir por producto 123
+
+Producto 106 se intenta sustituir por producto 105
+
+Producto 106 se intenta sustituir por producto 116
+
+Producto 106 se intenta sustituir por producto 115
+
+Producto 106 se intenta sustituir por producto 113
+
+Producto 106 se intenta sustituir por producto 112
+
+Producto 106 se intenta sustituir por producto 111
+
+Producto 106 se intenta sustituir por producto 109
+
+Producto 106 se intenta sustituir por producto 106
+
+Producto 106 se intenta sustituir por producto 37
+
+Producto 106 se intenta sustituir por producto 36
+
+Producto 106 se intenta sustituir por producto 34
+
+Producto 106 se intenta sustituir por producto 31
+
+Producto 106 se intenta sustituir por producto 42
+
+Producto 106 se intenta sustituir por producto 16
+
+Producto 106 se intenta sustituir por producto 59
+
+He hecho un cambio de producto 106 por 59
+
+He conseguido cambiar estos productos [80, 106] que bloqueaban el aumento de tramos. El nuevo pedido es [59, 59, 80, 80, 80] y las apariciones modificadas son:
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+80                1               9          3.0
+125               0               1          0.0
+123               0               1          0.0
+105               0               1          0.0
+116               0               1          0.0
+..              ...             ...          ...
+45                0               0          0.0
+74                0               0          0.0
+107               0               0          0.0
+88                0               0          0.0
+29                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 3 y lo consigo.
+
+Intento aumentar tramos a 4 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 3 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [80] productos que bloquean el aumento de tramos.
+
+Producto 80 se intenta sustituir por producto 80
+
+Producto 80 se intenta sustituir por producto 125
+
+Producto 80 se intenta sustituir por producto 123
+
+Producto 80 se intenta sustituir por producto 105
+
+Producto 80 se intenta sustituir por producto 116
+
+Producto 80 se intenta sustituir por producto 115
+
+Producto 80 se intenta sustituir por producto 113
+
+Producto 80 se intenta sustituir por producto 112
+
+Producto 80 se intenta sustituir por producto 111
+
+Producto 80 se intenta sustituir por producto 109
+
+Producto 80 se intenta sustituir por producto 106
+
+Producto 80 se intenta sustituir por producto 37
+
+Producto 80 se intenta sustituir por producto 36
+
+Producto 80 se intenta sustituir por producto 34
+
+Producto 80 se intenta sustituir por producto 31
+
+Producto 80 se intenta sustituir por producto 42
+
+Producto 80 se intenta sustituir por producto 16
+
+Producto 80 se intenta sustituir por producto 59
+
+Producto 80 se intenta sustituir por producto 70
+
+Producto 80 se intenta sustituir por producto 68
+
+Producto 80 se intenta sustituir por producto 67
+
+He hecho un cambio de producto 80 por 67
+
+He conseguido cambiar estos productos [80] que bloqueaban el aumento de tramos. El nuevo pedido es [67, 59, 59, 80, 80] y las apariciones modificadas son:
+
+     Tramos_minimos  Tramos_maximos  Apariciones
+80                1               9          2.0
+125               0               1          0.0
+123               0               1          0.0
+105               0               1          0.0
+116               0               1          0.0
+..              ...             ...          ...
+45                0               0          0.0
+74                0               0          0.0
+107               0               0          0.0
+88                0               0          0.0
+29                0               0          0.0
+
+[120 rows x 3 columns]
+
+Intento aumentar tramos a 4 y lo consigo.
+
+Intento aumentar tramos a 5 pero no lo consigo porque hay elementos que me lo impiden. Por tanto, me quedo con 4 tramos.
+
+Se puede intentar cambiar los productos que tiene el pedido,  ya que tiene [80, 59, 67] productos que bloquean el aumento de tramos.
+
+Producto 80 se intenta sustituir por producto 80
+
+Producto 80 se intenta sustituir por producto 125
+
+Producto 80 se intenta sustituir por producto 123
+
+Producto 80 se intenta sustituir por producto 105
+
+Producto 80 se intenta sustituir por producto 116
+
+Producto 80 se intenta sustituir por producto 115
+
+Producto 80 se intenta sustituir por producto 113
+
+Producto 80 se intenta sustituir por producto 112
+
+Producto 80 se intenta sustituir por producto 111
+
+Producto 80 se intenta sustituir por producto 109
+
+Producto 80 se intenta sustituir por producto 106
+
+Producto 80 se intenta sustituir por producto 37
+
+Producto 80 se intenta sustituir por producto 36
+
+Producto 80 se intenta sustituir por producto 34
+
+Producto 80 se intenta sustituir por producto 31
+
+Producto 80 se intenta sustituir por producto 42
+
+Producto 80 se intenta sustituir por producto 16
+
+Producto 80 se intenta sustituir por producto 59
+
+Producto 80 se intenta sustituir por producto 70
+
+Producto 80 se intenta sustituir por producto 68
+
+Producto 80 se intenta sustituir por producto 67
+
+Producto 80 se intenta sustituir por producto 63
+
+Producto 80 se intenta sustituir por producto 62
+
+He hecho un cambio de producto 80 por 62
+
+Producto 59 se intenta sustituir por producto 80
+
+Producto 59 se intenta sustituir por producto 125
+
+Producto 59 se intenta sustituir por producto 123
+
+Producto 59 se intenta sustituir por producto 105
+
+Producto 59 se intenta sustituir por producto 116
+
+Producto 59 se intenta sustituir por producto 115
+
+Producto 59 se intenta sustituir por producto 113
+
+Producto 59 se intenta sustituir por producto 112
+
+Producto 59 se intenta sustituir por producto 111
+
+Producto 59 se intenta sustituir por producto 109
+
+Producto 59 se intenta sustituir por producto 106
+
+Producto 59 se intenta sustituir por producto 37
+
+Producto 59 se intenta sustituir por producto 36
+
+Producto 59 se intenta sustituir por producto 34
+
+Producto 59 se intenta sustituir por producto 31
+
+Producto 59 se intenta sustituir por producto 42
+
+Producto 59 se intenta sustituir por producto 16
+
+Producto 59 se intenta sustituir por producto 59
+
+Producto 59 se intenta sustituir por producto 70
+
+Producto 59 se intenta sustituir por producto 68
+
+Producto 59 se intenta sustituir por producto 67
+
+Producto 59 se intenta sustituir por producto 63
+
+Producto 59 se intenta sustituir por producto 62
+
+Producto 59 se intenta sustituir por producto 61
+
+He hecho un cambio de producto 59 por 61
+
+Producto 67 se intenta sustituir por producto 80
+
+Producto 67 se intenta sustituir por producto 125
+
+Producto 67 se intenta sustituir por producto 123
+
+Producto 67 se intenta sustituir por producto 105
+
+Producto 67 se intenta sustituir por producto 116
+
+Producto 67 se intenta sustituir por producto 115
+
+Producto 67 se intenta sustituir por producto 113
+
+Producto 67 se intenta sustituir por producto 112
+
+Producto 67 se intenta sustituir por producto 111
+
+Producto 67 se intenta sustituir por producto 109
+
+Producto 67 se intenta sustituir por producto 106
+
+Producto 67 se intenta sustituir por producto 37
+
+Producto 67 se intenta sustituir por producto 36
+
+Producto 67 se intenta sustituir por producto 34
+
+Producto 67 se intenta sustituir por producto 31
+
+Producto 67 se intenta sustituir por producto 42
+
+Producto 67 se intenta sustituir por producto 16
+
+Producto 67 se intenta sustituir por producto 59
+
+Producto 67 se intenta sustituir por producto 70
+
+Producto 67 se intenta sustituir por producto 68
+
+Producto 67 se intenta sustituir por producto 67
+
+Producto 67 se intenta sustituir por producto 63
+
+Producto 67 se intenta sustituir por producto 62
+
+Producto 67 se intenta sustituir por producto 61
+
+Producto 67 se intenta sustituir por producto 58
+
+Producto 67 se intenta sustituir por producto 50
+
+Producto 67 se intenta sustituir por producto 127
+
+Producto 67 se intenta sustituir por producto 131
+
+Producto 67 se intenta sustituir por producto 75
+
+Producto 67 se intenta sustituir por producto 132
+
+Producto 67 se intenta sustituir por producto 76
+
+Producto 67 se intenta sustituir por producto 92
+
+Producto 67 se intenta sustituir por producto 89
+
+Producto 67 se intenta sustituir por producto 97
+
+Producto 67 se intenta sustituir por producto 86
+
+Producto 67 se intenta sustituir por producto 85
+
+Producto 67 se intenta sustituir por producto 90
+
+Producto 67 se intenta sustituir por producto 82
+
+Producto 67 se intenta sustituir por producto 13
+
+Producto 67 se intenta sustituir por producto 81
+
+Producto 67 se intenta sustituir por producto 87
+
+Producto 67 se intenta sustituir por producto 77
+
+Producto 67 se intenta sustituir por producto 55
+
+Producto 67 se intenta sustituir por producto 72
+
+Producto 67 se intenta sustituir por producto 43
+
+Producto 67 se intenta sustituir por producto 41
+
+Producto 67 se intenta sustituir por producto 15
+
+Producto 67 se intenta sustituir por producto 48
+
+Producto 67 se intenta sustituir por producto 95
+
+Producto 67 se intenta sustituir por producto 17
+
+Producto 67 se intenta sustituir por producto 47
+
+Producto 67 se intenta sustituir por producto 18
+
+Producto 67 se intenta sustituir por producto 19
+
+Producto 67 se intenta sustituir por producto 20
+
+Producto 67 se intenta sustituir por producto 21
+
+Producto 67 se intenta sustituir por producto 46
+
+Producto 67 se intenta sustituir por producto 22
+
+Producto 67 se intenta sustituir por producto 96
+
+Producto 67 se intenta sustituir por producto 71
+
+Producto 67 se intenta sustituir por producto 54
+
+Producto 67 se intenta sustituir por producto 69
+
+Producto 67 se intenta sustituir por producto 57
+
+Producto 67 se intenta sustituir por producto 44
+
+Producto 67 se intenta sustituir por producto 53
+
+Producto 67 se intenta sustituir por producto 60
+
+Producto 67 se intenta sustituir por producto 52
+
+Producto 67 se intenta sustituir por producto 51
+
+Producto 67 se intenta sustituir por producto 101
+
+Producto 67 se intenta sustituir por producto 100
+
+Producto 67 se intenta sustituir por producto 64
+
+Producto 67 se intenta sustituir por producto 49
+
+Producto 67 se intenta sustituir por producto 23
+
+Producto 67 se intenta sustituir por producto 65
+
+Producto 67 se intenta sustituir por producto 66
+
+Producto 67 se intenta sustituir por producto 99
+
+Producto 67 se intenta sustituir por producto 98
+
+Producto 67 se intenta sustituir por producto 56
+
+Producto 67 se intenta sustituir por producto 24
+
+Producto 67 se intenta sustituir por producto 102
+
+Producto 67 se intenta sustituir por producto 26
+
+Producto 67 se intenta sustituir por producto 84
+
+Producto 67 se intenta sustituir por producto 83
+
+Producto 67 se intenta sustituir por producto 117
+
+Producto 67 se intenta sustituir por producto 118
+
+Producto 67 se intenta sustituir por producto 120
+
+Producto 67 se intenta sustituir por producto 121
+
+Producto 67 se intenta sustituir por producto 122
+
+Producto 67 se intenta sustituir por producto 124
+
+Producto 67 se intenta sustituir por producto 79
+
+Producto 67 se intenta sustituir por producto 126
+
+Producto 67 se intenta sustituir por producto 78
+
+Producto 67 se intenta sustituir por producto 128
+
+Producto 67 se intenta sustituir por producto 129
+
+Producto 67 se intenta sustituir por producto 130
+
+Producto 67 se intenta sustituir por producto 119
+
+Producto 67 se intenta sustituir por producto 104
+
+Producto 67 se intenta sustituir por producto 103
+
+Producto 67 se intenta sustituir por producto 114
+
+Producto 67 se intenta sustituir por producto 25
+
+Producto 67 se intenta sustituir por producto 110
+
+Producto 67 se intenta sustituir por producto 108
+
+Producto 67 se intenta sustituir por producto 94
+
+Producto 67 se intenta sustituir por producto 27
+
+Producto 67 se intenta sustituir por producto 30
+
+Producto 67 se intenta sustituir por producto 93
+
+Producto 67 se intenta sustituir por producto 32
+
+Producto 67 se intenta sustituir por producto 33
+
+Producto 67 se intenta sustituir por producto 35
+
+Producto 67 se intenta sustituir por producto 91
+
+Producto 67 se intenta sustituir por producto 38
+
+Producto 67 se intenta sustituir por producto 39
+
+Producto 67 se intenta sustituir por producto 40
+
+Producto 67 se intenta sustituir por producto 28
+
+Producto 67 se intenta sustituir por producto 14
+
+Producto 67 se intenta sustituir por producto 73
+
+Producto 67 se intenta sustituir por producto 45
+
+Producto 67 se intenta sustituir por producto 74
+
+Producto 67 se intenta sustituir por producto 107
+
+Producto 67 se intenta sustituir por producto 88
+
+Producto 67 se intenta sustituir por producto 29
+
+No he conseguido cambiar todos los productos que bloqueaban el aumento de tramos[80, 59, 67]
+
+PEDIDO OPTIMO [80, 67, 59, 59, 80] y los tramos 4
